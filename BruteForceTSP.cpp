@@ -2,32 +2,35 @@
 #include <algorithm>
 #include <climits>
 
-std::vector<int> BruteForceTSP::solve(const TSPInstance& instance) {
-    int cityCount = instance.getCityCount();
-    std::vector<int> cities(cityCount);
-    for (int i = 0; i < cityCount; ++i) {
+int calculate_cost(const std::vector<int>& path, const std::vector<std::vector<int>>& distances) {
+    int cost = 0;
+    int num_cities = path.size();
+    for (int i = 0; i < num_cities - 1; ++i) {
+        cost += distances[path[i]][path[i + 1]];
+    }
+    cost += distances[path[num_cities - 1]][path[0]]; // Powrót do miasta początkowego
+    return cost;
+}
+
+std::pair<std::vector<int>, int> tsp_bruteforce(const TSPInstance& instance) {
+    std::vector<std::vector<int>> distances = instance.getDistances();
+    int num_cities = instance.getCityCount();
+
+    std::vector<int> cities(num_cities);
+    for (int i = 0; i < num_cities; ++i) {
         cities[i] = i;
     }
 
-    int bestCost = INT_MAX;
-    std::vector<int> bestTour;
+    int min_cost = INT_MAX;
+    std::vector<int> best_path;
 
-    permute(cities, 1, cityCount - 1, instance, bestCost, bestTour);
-    return bestTour;
-}
+    do {
+        int current_cost = calculate_cost(cities, distances);
+        if (current_cost < min_cost) {
+            min_cost = current_cost;
+            best_path = cities;
+        }
+    } while (std::next_permutation(cities.begin(), cities.end()));
 
-void BruteForceTSP::permute(std::vector<int>& cities, int l, int r, const TSPInstance& instance, int& bestCost, std::vector<int>& bestTour) {
-    if (l == r) {
-        int currentCost = calculateTourCost(instance, cities);
-        if (currentCost < bestCost) {
-            bestCost = currentCost;
-            bestTour = cities;
-        }
-    } else {
-        for (int i = l; i <= r; ++i) {
-            std::swap(cities[l], cities[i]);
-            permute(cities, l + 1, r, instance, bestCost, bestTour);
-            std::swap(cities[l], cities[i]);  // Powrót do pierwotnej permutacji
-        }
-    }
+    return {best_path, min_cost};
 }

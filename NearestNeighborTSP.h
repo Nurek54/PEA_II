@@ -1,11 +1,10 @@
 #ifndef NEARESTNEIGHBORTSP_H
 #define NEARESTNEIGHBORTSP_H
 
-#include "TSPAlgorithm.h"
+#include "TSPInstance.h"
+#include <vector>
+#include <utility> // for std::pair
 
-class NearestNeighborTSP : public TSPAlgorithm {
-public:
-    std::vector<int> solve(const TSPInstance& instance) override;
-};
+std::pair<std::vector<int>, int> tsp_nearest_neighbor(const TSPInstance& instance);
 
 #endif // NEARESTNEIGHBORTSP_H

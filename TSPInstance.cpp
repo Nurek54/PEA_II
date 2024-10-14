@@ -1,6 +1,5 @@
 #include "TSPInstance.h"
 #include <fstream>
-#include <sstream>
 #include <stdexcept>
 
 TSPInstance::TSPInstance(const std::string& filename) {
@@ -23,8 +22,8 @@ void TSPInstance::loadFromFile(const std::string& filename) {
     }
 }
 
-int TSPInstance::getCost(int i, int j) const {
-    return costMatrix[i][j];
+const std::vector<std::vector<int>>& TSPInstance::getDistances() const {
+    return costMatrix;
 }
 
 int TSPInstance::getCityCount() const {

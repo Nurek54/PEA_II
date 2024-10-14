@@ -3,29 +3,38 @@
 #include "BruteForceTSP.h"
 #include "NearestNeighborTSP.h"
 #include "RandomTSP.h"
-#include "TSPExperiment.h"
 
 int main() {
     try {
         // Wczytaj instancję problemu z pliku
         TSPInstance instance("../matrix_6x6.atsp");
 
-        // Utwórz obiekty algorytmów
-        BruteForceTSP bruteForce;
-        NearestNeighborTSP nearestNeighbor;
-        RandomTSP randomAlg;
-
-        // Utwórz obiekt do eksperymentów
-        TSPExperiment experiment;
-
+        // Algorytm Brute Force
         std::cout << "Algorytm Brute Force:\n";
-        experiment.runExperiment(bruteForce, instance);
+        auto result = tsp_bruteforce(instance);
+        std::cout << "Najlepsza trasa: ";
+        for (int city : result.first) {
+            std::cout << city << " ";
+        }
+        std::cout << "\nKoszt: " << result.second << "\n\n";
 
-        std::cout << "\nAlgorytm Najbliższych Sąsiadów:\n";
-        experiment.runExperiment(nearestNeighbor, instance);
+        // Algorytm Najbliższych Sąsiadów
+        std::cout << "Algorytm Najbliższych Sąsiadów:\n";
+        result = tsp_nearest_neighbor(instance);
+        std::cout << "Najlepsza trasa: ";
+        for (int city : result.first) {
+            std::cout << city << " ";
+        }
+        std::cout << "\nKoszt: " << result.second << "\n\n";
 
-        std::cout << "\nLosowy Algorytm:\n";
-        experiment.runExperiment(randomAlg, instance);
+        // Losowy Algorytm
+        std::cout << "Losowy Algorytm:\n";
+        result = tsp_random(instance);
+        std::cout << "Najlepsza trasa: ";
+        for (int city : result.first) {
+            std::cout << city << " ";
+        }
+        std::cout << "\nKoszt: " << result.second << "\n";
 
     } catch (const std::exception& ex) {
         std::cerr << "Wystąpił błąd: " << ex.what() << std::endl;

@@ -1,12 +1,10 @@
 #ifndef RANDOMTSP_H
 #define RANDOMTSP_H
 
-#include "TSPAlgorithm.h"
+#include "TSPInstance.h"
 #include <vector>
+#include <utility>  // Dla std::pair
 
-class RandomTSP : public TSPAlgorithm {
-public:
-    std::vector<int> solve(const TSPInstance& instance) override;
-};
+std::pair<std::vector<int>, int> tsp_random(const TSPInstance& instance);
 
 #endif // RANDOMTSP_H

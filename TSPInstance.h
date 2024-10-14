@@ -7,7 +7,7 @@
 class TSPInstance {
 public:
     TSPInstance(const std::string& filename);  // Konstruktor wczytujący dane z pliku
-    int getCost(int i, int j) const;           // Zwraca koszt przejścia z miasta i do miasta j
+    const std::vector<std::vector<int>>& getDistances() const;  // Zwraca macierz kosztów
     int getCityCount() const;                  // Zwraca liczbę miast
 
 private:
