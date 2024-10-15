@@ -7,34 +7,23 @@
 int main() {
     try {
         // Wczytaj instancję problemu z pliku
-        TSPInstance instance("../matrix_6x6.atsp");
+        TSPInstance instance("../matrix_8x8.atsp");  // Podaj właściwą ścieżkę do pliku z danymi
 
         // Algorytm Brute Force
-        std::cout << "Algorytm Brute Force:\n";
+        //std::cout << "Algorytm Brute Force:\n";
         auto result = tsp_bruteforce(instance);
-        std::cout << "Najlepsza trasa: ";
-        for (int city : result.first) {
-            std::cout << city << " ";
-        }
-        std::cout << "\nKoszt: " << result.second << "\n\n";
 
         // Algorytm Najbliższych Sąsiadów
-        std::cout << "Algorytm Najbliższych Sąsiadów:\n";
+        //std::cout << "\nAlgorytm Najbliższych Sąsiadów:\n";
+        std::cout<<std::endl;
+
         result = tsp_nearest_neighbor(instance);
-        std::cout << "Najlepsza trasa: ";
-        for (int city : result.first) {
-            std::cout << city << " ";
-        }
-        std::cout << "\nKoszt: " << result.second << "\n\n";
 
         // Losowy Algorytm
-        std::cout << "Losowy Algorytm:\n";
+        //std::cout << "\nLosowy Algorytm:\n";
+        std::cout<<std::endl;
+
         result = tsp_random(instance);
-        std::cout << "Najlepsza trasa: ";
-        for (int city : result.first) {
-            std::cout << city << " ";
-        }
-        std::cout << "\nKoszt: " << result.second << "\n";
 
     } catch (const std::exception& ex) {
         std::cerr << "Wystąpił błąd: " << ex.what() << std::endl;
