@@ -1,81 +1,59 @@
 #include "RandomTSP.h"
-#include <algorithm>
+#include "SaveToCSV.h"
+#include "TSPUtilities.h"  // Do obliczania kosztu trasy
 #include <cstdlib>
-#include <ctime>
-#include <chrono>  // Do mierzenia czasu
-#include <fstream>  // Do zapisu pliku CSV
-#include <iostream> // Do wyświetlania wyników
-#include <iomanip>  // Do precyzyjnego formatowania liczb
+#include <chrono>
+#include <iostream>
+#include <ctime>  // Do ustawienia ziarna dla rand()
 
-int calculate_cost(const std::vector<int>& path, const std::vector<std::vector<int>>& distances);
+void generate_random_permutation(std::vector<int>& tour) {
+    int n = tour.size();
+    srand(time(nullptr));
+
+    for (int i = n - 1; i > 0; --i) {
+        int j = rand() % (i + 1);
+        std::swap(tour[i], tour[j]);
+    }
+}
 
 std::pair<std::vector<int>, int> tsp_random(const TSPInstance& instance) {
     std::vector<std::vector<int>> distances = instance.getDistances();
     int num_cities = instance.getCityCount();
 
-    std::vector<int> tour(num_cities);
-    for (int i = 0; i < num_cities; ++i) {
-        tour[i] = i;
+    int iterations = 10000;
+    std::vector<int> best_tour;
+    int min_cost = INT_MAX;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    for (int iter = 0; iter < iterations; ++iter) {
+        std::vector<int> current_tour(num_cities);
+        for (int i = 0; i < num_cities; ++i) {
+            current_tour[i] = i;
+        }
+
+        generate_random_permutation(current_tour);
+
+        // Zamiast wywołania "calculate_cost", używamy "Utilities::calculate_cost"
+        int current_cost = Utilities::calculate_cost(current_tour, distances);
+
+        if (current_cost < min_cost) {
+            min_cost = current_cost;
+            best_tour = current_tour;
+        }
     }
 
-    srand((time(NULL)));
-    std::random_shuffle(tour.begin(), tour.end());
-
-    auto start = std::chrono::high_resolution_clock::now();  // Start pomiaru czasu
-
-    auto end = std::chrono::high_resolution_clock::now();  // Koniec pomiaru czasu
-
-    // Obliczamy czasy w różnych jednostkach
+    auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> seconds = end - start;
     std::chrono::duration<double, std::milli> milliseconds = end - start;
     std::chrono::duration<double, std::nano> nanoseconds = end - start;
 
-    // Obliczamy koszt trasy (poza pomiarem czasu)
-    int totalCost = calculate_cost(tour, distances);
+    std::cout << "Losowy Algorytm (z iteracjami)\n";
+    std::cout << "Czas wykonania: " << seconds.count() << " s\n";
+    std::cout << "Najlepszy koszt po " << iterations << " iteracjach: " << min_cost << "\n";
 
-    // Wyświetlanie wyników na konsoli
-    std::cout << "Losowy Algorytm\n";
-    std::cout << "Czas wykonania:\n";
-    std::cout << "  W sekundach: " << seconds.count() << " s\n";
-    std::cout << "  W milisekundach: " << milliseconds.count() << " ms\n";
-    std::cout << "  W nanosekundach: " << nanoseconds.count() << " ns\n";
+    SaveToCSV save("RandomResults.csv");
+    save.saveResults("Random", seconds, milliseconds, nanoseconds, best_tour, min_cost);
 
-    std::cout << "Najlepsza trasa: ";
-    for (int city : tour) {
-        std::cout << city << " ";
-    }
-    std::cout << "\nKoszt: " << totalCost << "\n";
-
-    // Zapis wyników do pliku CSV
-    std::ofstream csvFile("results.csv", std::ios::app);  // Tryb dodawania do pliku
-    if (csvFile.is_open()) {
-        // Sprawdzenie, czy plik jest nowy, i jeśli tak, dodanie nagłówka
-        static bool isFileNew = true;
-        if (isFileNew) {
-            csvFile << "Algorithm | Seconds | Milliseconds | Nanoseconds | Path | Cost\n";  // Nagłówek CSV
-            isFileNew = false;
-        }
-
-        csvFile << std::fixed << std::setprecision(6)  // Ustaw precyzję na 6 miejsc po przecinku
-                << "Random" << " | "
-                << seconds.count() << " | "
-                << milliseconds.count() << " | "
-                << nanoseconds.count() << " | ";
-
-        // Zapisz trasę oddzielając miasta " | "
-        for (size_t i = 0; i < tour.size(); ++i) {
-            csvFile << tour[i];
-            if (i != tour.size() - 1) {
-                csvFile << " | ";  // Oddziel miasta " | "
-            }
-        }
-
-        csvFile << " | " << totalCost << "\n";  // Zakończ linię pliku z kosztem trasy
-        csvFile.close();
-        std::cout << "Wyniki zapisano do pliku: results.csv\n";
-    } else {
-        std::cerr << "Nie można otworzyć pliku: results.csv\n";
-    }
-
-    return {tour, totalCost};
+    return {best_tour, min_cost};
 }

@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/g_sie/OneDrive/Pulpit/PEA I
+# Install script for directory: C:/Users/g_sie/OneDrive/Pulpit/PEA_I
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/g_sie/OneDrive/Pulpit/PEA I/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/g_sie/OneDrive/Pulpit/PEA_I/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

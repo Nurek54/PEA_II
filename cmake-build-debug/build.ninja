@@ -39,7 +39,7 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = C$:/Users/g_sie/OneDrive/Pulpit/PEA$ I/cmake-build-debug/
+cmake_ninja_workdir = C$:/Users/g_sie/OneDrive/Pulpit/PEA_I/cmake-build-debug/
 # =============================================================================
 # Object build statements for EXECUTABLE target PEA_I
 
@@ -49,44 +49,44 @@ cmake_ninja_workdir = C$:/Users/g_sie/OneDrive/Pulpit/PEA$ I/cmake-build-debug/
 
 build cmake_object_order_depends_target_PEA_I: phony || CMakeFiles/PEA_I.dir
 
-build CMakeFiles/PEA_I.dir/main.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA$ I/main.cpp || cmake_object_order_depends_target_PEA_I
+build CMakeFiles/PEA_I.dir/main.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA_I/main.cpp || cmake_object_order_depends_target_PEA_I
   DEP_FILE = CMakeFiles\PEA_I.dir\main.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\PEA_I.dir
   OBJECT_FILE_DIR = CMakeFiles\PEA_I.dir
 
-build CMakeFiles/PEA_I.dir/TSPInstance.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA$ I/TSPInstance.cpp || cmake_object_order_depends_target_PEA_I
+build CMakeFiles/PEA_I.dir/TSPInstance.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA_I/TSPInstance.cpp || cmake_object_order_depends_target_PEA_I
   DEP_FILE = CMakeFiles\PEA_I.dir\TSPInstance.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\PEA_I.dir
   OBJECT_FILE_DIR = CMakeFiles\PEA_I.dir
 
-build CMakeFiles/PEA_I.dir/TSPAlgorithm.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA$ I/TSPAlgorithm.cpp || cmake_object_order_depends_target_PEA_I
-  DEP_FILE = CMakeFiles\PEA_I.dir\TSPAlgorithm.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\PEA_I.dir
-  OBJECT_FILE_DIR = CMakeFiles\PEA_I.dir
-
-build CMakeFiles/PEA_I.dir/BruteForceTSP.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA$ I/BruteForceTSP.cpp || cmake_object_order_depends_target_PEA_I
+build CMakeFiles/PEA_I.dir/BruteForceTSP.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA_I/BruteForceTSP.cpp || cmake_object_order_depends_target_PEA_I
   DEP_FILE = CMakeFiles\PEA_I.dir\BruteForceTSP.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\PEA_I.dir
   OBJECT_FILE_DIR = CMakeFiles\PEA_I.dir
 
-build CMakeFiles/PEA_I.dir/NearestNeighborTSP.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA$ I/NearestNeighborTSP.cpp || cmake_object_order_depends_target_PEA_I
+build CMakeFiles/PEA_I.dir/NearestNeighborTSP.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA_I/NearestNeighborTSP.cpp || cmake_object_order_depends_target_PEA_I
   DEP_FILE = CMakeFiles\PEA_I.dir\NearestNeighborTSP.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\PEA_I.dir
   OBJECT_FILE_DIR = CMakeFiles\PEA_I.dir
 
-build CMakeFiles/PEA_I.dir/RandomTSP.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA$ I/RandomTSP.cpp || cmake_object_order_depends_target_PEA_I
+build CMakeFiles/PEA_I.dir/RandomTSP.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA_I/RandomTSP.cpp || cmake_object_order_depends_target_PEA_I
   DEP_FILE = CMakeFiles\PEA_I.dir\RandomTSP.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\PEA_I.dir
   OBJECT_FILE_DIR = CMakeFiles\PEA_I.dir
 
-build CMakeFiles/PEA_I.dir/TSPExperiment.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA$ I/TSPExperiment.cpp || cmake_object_order_depends_target_PEA_I
-  DEP_FILE = CMakeFiles\PEA_I.dir\TSPExperiment.cpp.obj.d
+build CMakeFiles/PEA_I.dir/SaveToCSV.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA_I/SaveToCSV.cpp || cmake_object_order_depends_target_PEA_I
+  DEP_FILE = CMakeFiles\PEA_I.dir\SaveToCSV.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\PEA_I.dir
+  OBJECT_FILE_DIR = CMakeFiles\PEA_I.dir
+
+build CMakeFiles/PEA_I.dir/TSPUtilities.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA_I/TSPUtilities.cpp || cmake_object_order_depends_target_PEA_I
+  DEP_FILE = CMakeFiles\PEA_I.dir\TSPUtilities.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\PEA_I.dir
   OBJECT_FILE_DIR = CMakeFiles\PEA_I.dir
@@ -99,7 +99,7 @@ build CMakeFiles/PEA_I.dir/TSPExperiment.cpp.obj: CXX_COMPILER__PEA_I_unscanned_
 #############################################
 # Link the executable PEA_I.exe
 
-build PEA_I.exe: CXX_EXECUTABLE_LINKER__PEA_I_Debug CMakeFiles/PEA_I.dir/main.cpp.obj CMakeFiles/PEA_I.dir/TSPInstance.cpp.obj CMakeFiles/PEA_I.dir/TSPAlgorithm.cpp.obj CMakeFiles/PEA_I.dir/BruteForceTSP.cpp.obj CMakeFiles/PEA_I.dir/NearestNeighborTSP.cpp.obj CMakeFiles/PEA_I.dir/RandomTSP.cpp.obj CMakeFiles/PEA_I.dir/TSPExperiment.cpp.obj
+build PEA_I.exe: CXX_EXECUTABLE_LINKER__PEA_I_Debug CMakeFiles/PEA_I.dir/main.cpp.obj CMakeFiles/PEA_I.dir/TSPInstance.cpp.obj CMakeFiles/PEA_I.dir/BruteForceTSP.cpp.obj CMakeFiles/PEA_I.dir/NearestNeighborTSP.cpp.obj CMakeFiles/PEA_I.dir/RandomTSP.cpp.obj CMakeFiles/PEA_I.dir/SaveToCSV.cpp.obj CMakeFiles/PEA_I.dir/TSPUtilities.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\PEA_I.dir
@@ -114,7 +114,7 @@ build PEA_I.exe: CXX_EXECUTABLE_LINKER__PEA_I_Debug CMakeFiles/PEA_I.dir/main.cp
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D "C:\Users\g_sie\OneDrive\Pulpit\PEA I\cmake-build-debug" && "C:\Program Files\JetBrains\CLion 2023.3.2\bin\cmake\win\x64\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D C:\Users\g_sie\OneDrive\Pulpit\PEA_I\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2023.3.2\bin\cmake\win\x64\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -125,7 +125,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D "C:\Users\g_sie\OneDrive\Pulpit\PEA I\cmake-build-debug" && "C:\Program Files\JetBrains\CLion 2023.3.2\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -S"C:\Users\g_sie\OneDrive\Pulpit\PEA I" -B"C:\Users\g_sie\OneDrive\Pulpit\PEA I\cmake-build-debug""
+  COMMAND = cmd.exe /C "cd /D C:\Users\g_sie\OneDrive\Pulpit\PEA_I\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2023.3.2\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -SC:\Users\g_sie\OneDrive\Pulpit\PEA_I -BC:\Users\g_sie\OneDrive\Pulpit\PEA_I\cmake-build-debug"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -143,7 +143,7 @@ build PEA_I: phony PEA_I.exe
 # =============================================================================
 
 #############################################
-# Folder: C:/Users/g_sie/OneDrive/Pulpit/PEA I/cmake-build-debug
+# Folder: C:/Users/g_sie/OneDrive/Pulpit/PEA_I/cmake-build-debug
 
 build all: phony PEA_I.exe
 
@@ -154,14 +154,14 @@ build all: phony PEA_I.exe
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCXXInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeRCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-Initialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-windres.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/WindowsPaths.cmake C$:/Users/g_sie/OneDrive/Pulpit/PEA$ I/CMakeLists.txt CMakeCache.txt CMakeFiles/3.27.8/CMakeCCompiler.cmake CMakeFiles/3.27.8/CMakeCXXCompiler.cmake CMakeFiles/3.27.8/CMakeRCCompiler.cmake CMakeFiles/3.27.8/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCXXInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeRCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-Initialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-windres.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/WindowsPaths.cmake C$:/Users/g_sie/OneDrive/Pulpit/PEA_I/CMakeLists.txt CMakeCache.txt CMakeFiles/3.27.8/CMakeCCompiler.cmake CMakeFiles/3.27.8/CMakeCXXCompiler.cmake CMakeFiles/3.27.8/CMakeRCCompiler.cmake CMakeFiles/3.27.8/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCXXInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeRCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-Initialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-windres.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/WindowsPaths.cmake C$:/Users/g_sie/OneDrive/Pulpit/PEA$ I/CMakeLists.txt CMakeCache.txt CMakeFiles/3.27.8/CMakeCCompiler.cmake CMakeFiles/3.27.8/CMakeCXXCompiler.cmake CMakeFiles/3.27.8/CMakeRCCompiler.cmake CMakeFiles/3.27.8/CMakeSystem.cmake: phony
+build C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCXXInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeRCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Compiler/GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-Initialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows-windres.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/WindowsPaths.cmake C$:/Users/g_sie/OneDrive/Pulpit/PEA_I/CMakeLists.txt CMakeCache.txt CMakeFiles/3.27.8/CMakeCCompiler.cmake CMakeFiles/3.27.8/CMakeCXXCompiler.cmake CMakeFiles/3.27.8/CMakeRCCompiler.cmake CMakeFiles/3.27.8/CMakeSystem.cmake: phony
 
 
 #############################################
