@@ -15,4 +15,6 @@ add_executable(PEA_I main.cpp
         SaveToCSV.cpp
         SaveToCSV.h
         TSPUtilities.cpp
-        TSPUtilities.h)
+        TSPUtilities.h
+        TSPSimulation.cpp
+        TSPSimulation.h)

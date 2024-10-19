@@ -5,6 +5,7 @@
 #include "NearestNeighborTSP.h"
 #include "RandomTSP.h"
 #include "TSPUtilities.h"  // Do generowania macierzy
+#include "TSPSimulation.h" // Nowa klasa symulacji
 
 // Funkcja wyswietlajaca menu
 void showMenu() {
@@ -16,9 +17,17 @@ void showMenu() {
     std::cout << "3. Uruchom Random Algorithm\n";
     std::cout << "4. Wygeneruj nowa losowa macierz odleglosci\n";
     std::cout << "5. Wczytaj dane z gotowego pliku\n";
-    std::cout << "6. Symulacja na losowych macierzach\n";  // Nowa opcja dla symulacji
+    std::cout << "6. Symulacja na losowych macierzach\n";
     std::cout << "0. Wyjscie\n";
     std::cout << "Wybierz opcje: ";
+}
+
+// Funkcja pytajaca o nazwe pliku
+std::string getFileNameFromUser(const std::string& prompt) {
+    std::string filename;
+    std::cout << prompt;
+    std::cin >> filename;
+    return filename;
 }
 
 // Funkcja do zapisywania macierzy do pliku
@@ -37,45 +46,6 @@ void saveMatrixToFile(const std::vector<std::vector<int>>& matrix, const std::st
         std::cout << "Losowa macierz zapisana do pliku: " << filename << std::endl;
     } else {
         std::cerr << "Nie mozna zapisac macierzy do pliku!" << std::endl;
-    }
-}
-
-// Funkcja pytajaca o nazwe pliku
-std::string getFileNameFromUser(const std::string& prompt) {
-    std::string filename;
-    std::cout << prompt;
-    std::cin >> filename;
-    return filename;
-}
-
-// Funkcja symulująca działanie algorytmów na losowych macierzach
-void runSimulation(int numMatrices, int matrixSize, int maxCost) {
-    for (int i = 0; i < numMatrices; ++i) {
-        std::cout << "Symulacja nr " << (i + 1) << "/" << numMatrices << "\n";
-
-        // Generowanie losowej macierzy
-        std::vector<std::vector<int>> matrix = Utilities::generate_random_matrix(matrixSize, 1, maxCost);
-
-        // Tymczasowy plik do zapisania macierzy (możesz pominąć zapis, jeśli nie potrzebujesz plików)
-        std::string matrixFile = "random_matrix_" + std::to_string(i + 1) + ".atsp";
-        saveMatrixToFile(matrix, matrixFile);
-
-        // Stwórz instancję TSP na podstawie wygenerowanej macierzy
-        TSPInstance instance(matrixFile);
-
-        // Uruchom algorytm Brute Force
-        std::cout << "\nBrute Force:\n";
-        tsp_bruteforce(instance);
-
-        // Uruchom algorytm Nearest Neighbor
-        std::cout << "\nNearest Neighbor:\n";
-        tsp_nearest_neighbor(instance);
-
-        // Uruchom Random Algorithm
-        std::cout << "\nRandom Algorithm:\n";
-        tsp_random(instance);
-
-        std::cout << "---------------------------------\n";
     }
 }
 
@@ -101,7 +71,7 @@ int main() {
                 }
                 // Uruchom Brute Force
                 TSPInstance instance(inputFilename);
-                auto result = tsp_bruteforce(instance);
+                tsp_bruteforce(instance);
                 std::cout << std::endl;
                 break;
             }
@@ -112,7 +82,7 @@ int main() {
                 }
                 // Uruchom Nearest Neighbor
                 TSPInstance instance(inputFilename);
-                auto result = tsp_nearest_neighbor(instance);
+                tsp_nearest_neighbor(instance);
                 std::cout << std::endl;
                 break;
             }
@@ -123,49 +93,39 @@ int main() {
                 }
                 // Uruchom Random Algorithm
                 TSPInstance instance(inputFilename);
-                auto result = tsp_random(instance);
+                tsp_random(instance);
                 std::cout << std::endl;
                 break;
             }
             case 4: {
                 // Generowanie nowej losowej macierzy
-                int size, minValue, maxValue;
+                int size, maxValue;
                 std::cout << "Podaj rozmiar macierzy: ";
                 std::cin >> size;
-                std::cout << "Podaj minimalna wartosc odleglosci: ";
-                std::cin >> minValue;
                 std::cout << "Podaj maksymalna wartosc odleglosci: ";
                 std::cin >> maxValue;
 
-                // Generowanie losowej macierzy
-                std::vector<std::vector<int>> matrix = Utilities::generate_random_matrix(size, minValue, maxValue);
-
-                // Pobranie nazwy pliku wejsciowego
+                std::vector<std::vector<int>> matrix = Utilities::generate_random_matrix(size, 1, maxValue);
                 inputFilename = getFileNameFromUser("Podaj nazwe pliku do zapisania macierzy (np. matrix.atsp): ");
                 saveMatrixToFile(matrix, inputFilename);
-
                 fileLoaded = true;
                 break;
             }
             case 5: {
                 bool fileOpened = false;
                 while (!fileOpened) {
-                    // Wczytywanie danych z gotowego pliku
                     inputFilename = getFileNameFromUser("Podaj nazwe pliku z macierza odleglosci (np. matrix.atsp): ");
                     std::ifstream file(inputFilename);
-
-                    // Dodaj wyświetlanie ścieżki dla lepszego debugowania
                     std::cout << "Probuje otworzyc plik: " << inputFilename << std::endl;
 
                     if (!file.is_open()) {
                         std::cerr << "Nie mozna otworzyc pliku: " << inputFilename << std::endl;
-                        std::cerr << "Upewnij sie, ze plik istnieje oraz czy podana sciezka jest poprawna.\n";
                         std::cout << "Czy chcesz sprobowac ponownie? (t/n): ";
                         char retry;
                         std::cin >> retry;
                         if (retry == 'n' || retry == 'N') {
                             std::cout << "Anulowano wczytywanie pliku.\n";
-                            break;  // Wyjdz z petli jesli uzytkownik nie chce sprobowac ponownie
+                            break;
                         }
                     } else {
                         std::cout << "Plik z macierza " << inputFilename << " wczytany.\n";
@@ -176,19 +136,17 @@ int main() {
                 break;
             }
             case 6: {
-                // Opcja symulacji na losowych macierzach
                 int numMatrices, matrixSize, maxCost;
-
                 std::cout << "Podaj liczbe macierzy do symulacji: ";
                 std::cin >> numMatrices;
-
                 std::cout << "Podaj rozmiar macierzy: ";
                 std::cin >> matrixSize;
-
                 std::cout << "Podaj maksymalna wartosc odleglosci: ";
                 std::cin >> maxCost;
 
-                runSimulation(numMatrices, matrixSize, maxCost);
+                // Tworzenie instancji klasy TSPSimulation i uruchomienie symulacji
+                TSPSimulation simulation(numMatrices, matrixSize, maxCost);
+                simulation.runSimulation();
                 break;
             }
             default:

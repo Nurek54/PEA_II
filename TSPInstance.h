@@ -6,14 +6,19 @@
 
 class TSPInstance {
 public:
-    TSPInstance(const std::string& filename);  // Konstruktor wczytujący dane z pliku
+    // Konstruktor przyjmujący nazwę pliku
+    TSPInstance(const std::string& filename);
+
+    // Nowy konstruktor przyjmujący macierz
+    TSPInstance(const std::vector<std::vector<int>>& matrix);
+
     const std::vector<std::vector<int>>& getDistances() const;  // Zwraca macierz kosztów
-    int getCityCount() const;                  // Zwraca liczbę miast
+    int getCityCount() const;  // Zwraca liczbę miast
 
 private:
     std::vector<std::vector<int>> costMatrix;  // Macierz kosztów
-    int cityCount;                             // Liczba miast
-    void loadFromFile(const std::string& filename); // Wczytanie danych z pliku
+    int cityCount;  // Liczba miast
+    void loadFromFile(const std::string& filename);  // Wczytanie danych z pliku
 };
 
 #endif // TSPINSTANCE_H
