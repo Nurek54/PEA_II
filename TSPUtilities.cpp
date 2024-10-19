@@ -23,7 +23,7 @@ std::vector<std::vector<int>> Utilities::generate_random_matrix(int size, int mi
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size; ++j) {
             if (i == j) {
-                matrix[i][j] = 0;  // Odległość do samego siebie to 0
+                matrix[i][j] = -1;  // Odległość do samego siebie to -1
             } else {
                 matrix[i][j] = rand() % (maxValue - minValue + 1) + minValue;  // Losowe wartości z zakresu
             }
@@ -31,3 +31,4 @@ std::vector<std::vector<int>> Utilities::generate_random_matrix(int size, int mi
     }
     return matrix;
 }
+

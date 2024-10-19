@@ -17,4 +17,6 @@ add_executable(PEA_I main.cpp
         TSPUtilities.cpp
         TSPUtilities.h
         TSPSimulation.cpp
-        TSPSimulation.h)
+        TSPSimulation.h
+        Menu.cpp
+        Menu.h)
