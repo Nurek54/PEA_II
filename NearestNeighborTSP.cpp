@@ -42,8 +42,8 @@ std::pair<std::vector<int>, int> tsp_nearest_neighbor(const TSPInstance& instanc
     // Zamiast wywołania "calculate_cost", używamy "Utilities::calculate_cost"
     int totalCost = Utilities::calculate_cost(tour, distances);
 
-    std::cout << "Algorytm Najbliższych Sąsiadów\n";
-    std::cout << "Czas wykonania: " << seconds.count() << " s\n";
+    //std::cout << "Algorytm Najbliższych Sąsiadów\n";
+    //std::cout << "Czas wykonania: " << seconds.count() << " s\n";
 
     SaveToCSV save("NearestNeighborResults.csv");
     save.saveResults("NearestNeighbor", seconds, milliseconds, nanoseconds, tour, totalCost);

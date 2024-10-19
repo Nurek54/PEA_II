@@ -1,57 +1,89 @@
 #include "TSPSimulation.h"
+#include "TSPInstance.h"
 #include "BruteForceTSP.h"
 #include "NearestNeighborTSP.h"
 #include "RandomTSP.h"
+#include "TSPUtilities.h"
+#include <cstdlib>    // Do rand() i srand()
 #include <iostream>
-#include <cstdlib>  // Do funkcji rand() i srand()
-#include <ctime>    // Do inicjalizacji ziarna rand()
+#include <chrono>     // Do opóźnień i dokładnego czasu
+#include <thread>     // Do sleep_for
+#include <ctime>      // Do time()
 
-// Konstruktor klasy TSPSimulation
-TSPSimulation::TSPSimulation(int numMatrices, int matrixSize, int maxCost)
-        : numMatrices(numMatrices), matrixSize(matrixSize), maxCost(maxCost) {
-    srand(time(nullptr));  // Inicjalizacja ziarna dla rand()
+// Funkcja mieszająca wartości rand() dla dodatkowej losowości
+// Aby zwiększyć losowość generowania liczb, kilkukrotnie wywołujemy rand()
+// (w tym przypadku 10 razy) w pętli. Dzięki temu wartości generowane przez rand()
+// są bardziej "wymieszane", co redukuje ryzyko powtarzalności przy szybkim wywoływaniu rand().
+void mixRand() {
+    for (int i = 0; i < 10; ++i) {
+        rand();  // Mieszaj wartości rand()
+    }
 }
 
-// Funkcja do generowania losowej macierzy z użyciem rand()
+// Konstruktor ustawia parametry symulacji
+// Konstruktor przyjmuje liczbę macierzy, rozmiar macierzy oraz maksymalny koszt
+// jako parametry wejściowe i zapisuje je jako pola klasy.
+TSPSimulation::TSPSimulation(int numMatrices, int matrixSize, int maxCost)
+        : numMatrices(numMatrices), matrixSize(matrixSize), maxCost(maxCost) {
+    // Nic nie zmieniamy w konstruktorze
+}
+
+// Funkcja generująca losową macierz odległości
+// Funkcja generateRandomMatrix() generuje losową macierz odległości o wymiarach
+// matrixSize x matrixSize, gdzie każdy element ma wartość z zakresu od -maxCost do maxCost.
 std::vector<std::vector<int>> TSPSimulation::generateRandomMatrix() {
     std::vector<std::vector<int>> matrix(matrixSize, std::vector<int>(matrixSize));
 
-    // Wypełnianie macierzy losowymi wartościami
+    // Ziarno mieszające na podstawie czasu w nanosekundach i wartości rand()
+    // Używamy czasu systemowego w nanosekundach do inicjalizacji generatora losowego (srand).
+    // Aby dodatkowo zwiększyć losowość, dodajemy wynik wcześniejszego wywołania rand() do ziarna.
+    auto now = std::chrono::high_resolution_clock::now();
+    auto duration = now.time_since_epoch();
+    unsigned long long nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count();
+
+    srand(nanoseconds + rand());  // Ustawienie nowego ziarna dla rand()
+
+    // Generowanie wartości losowych dla każdego elementu macierzy
     for (int i = 0; i < matrixSize; ++i) {
         for (int j = 0; j < matrixSize; ++j) {
-            if (i != j) {
-                matrix[i][j] = rand() % maxCost + 1;  // Losowanie wartości z przedziału [1, maxCost]
+            if (i == j) {
+                // Wartości na przekątnej (koszt przejścia z miasta do siebie samego) są -1
+                matrix[i][j] = -1;
             } else {
-                matrix[i][j] = 0;  // Koszt do samego siebie wynosi 0
+                // Losowanie wartości od 1 do maxCost
+                matrix[i][j] = rand() % maxCost + 1;  // Gwarantuje wartości od 1 do maxCost
             }
         }
     }
 
-    return matrix;
+    // Mieszanie wartości rand() dla większej losowości przed następną macierzą
+    // Po wygenerowaniu macierzy, mieszamy wartości rand(), aby następne losowania
+    // miały większą różnorodność i unikały powtarzalnych wzorców.
+    mixRand();
+
+    return matrix;  // Zwracamy wygenerowaną macierz
 }
 
-// Funkcja uruchamiajaca symulacje
+// Funkcja uruchamiająca symulację
+// Funkcja runSimulation() uruchamia symulację dla określonej liczby macierzy.
+// Dla każdej macierzy wywoływane są algorytmy: BruteForce, Nearest Neighbor i Random Algorithm.
 void TSPSimulation::runSimulation() {
     for (int i = 0; i < numMatrices; ++i) {
-        std::cout << "Symulacja nr " << (i + 1) << " z " << numMatrices << std::endl;
-
-        // Generowanie nowej losowej macierzy
+        // Generowanie nowej macierzy dla każdej iteracji
         std::vector<std::vector<int>> matrix = generateRandomMatrix();
+        TSPInstance instance(matrix);  // Przekazujemy macierz do obiektu TSPInstance
 
-        // Tworzenie instancji TSP na podstawie wygenerowanej macierzy
-        TSPInstance instance(matrix);
-
-        // Uruchom algorytmy na tej samej macierzy
-        std::cout << "Brute Force:\n";
+        // Uruchamianie wszystkich trzech algorytmów dla wygenerowanej macierzy
         tsp_bruteforce(instance);
-
-        std::cout << "Nearest Neighbor:\n";
         tsp_nearest_neighbor(instance);
-
-        std::cout << "Random Algorithm:\n";
         tsp_random(instance);
 
-        std::cout << "---------------------------------\n";
+        // Krótkie opóźnienie między kolejnymi iteracjami symulacji
+        // Używamy sleep_for z opóźnieniem 50 milisekund, aby zredukować ryzyko,
+        // że generator losowy w kolejnych iteracjach zostanie zainicjalizowany w tej samej milisekundzie,
+        // co zwiększa szansę na bardziej unikalne macierze przy każdym wywołaniu.
+        std::this_thread::sleep_for(std::chrono::milliseconds(50)); // 50 ms opóźnienia
     }
-    std::cout << "\nSymulacja zakonczona. Przetestowano " << numMatrices << " macierzy dla kazdego algorytmu.\n";
+
+    std::cout << "Symulacja zakonczona.\n";
 }

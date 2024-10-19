@@ -6,37 +6,44 @@
 #include <iostream>
 #include <ctime>  // Do ustawienia ziarna dla rand()
 
+// Funkcja generująca losową permutację trasy
 void generate_random_permutation(std::vector<int>& tour) {
     int n = tour.size();
-    srand(time(nullptr));
 
+    // Algorytm Fisher-Yates do losowej permutacji
     for (int i = n - 1; i > 0; --i) {
-        int j = rand() % (i + 1);
+        int j = rand() % (i + 1);  // Losowa liczba od 0 do i
         std::swap(tour[i], tour[j]);
     }
 }
 
+// Funkcja implementująca algorytm Random TSP
 std::pair<std::vector<int>, int> tsp_random(const TSPInstance& instance) {
     std::vector<std::vector<int>> distances = instance.getDistances();
     int num_cities = instance.getCityCount();
 
-    int iterations = 10000;
+    // Zwiększona liczba iteracji, aby zwiększyć szanse na lepszy wynik
+    int iterations = 10;
     std::vector<int> best_tour;
     int min_cost = INT_MAX;
 
+    // Mierzenie czasu działania algorytmu
     auto start = std::chrono::high_resolution_clock::now();
 
+    // Wykonywanie wielu losowych tras i szukanie najlepszej
     for (int iter = 0; iter < iterations; ++iter) {
         std::vector<int> current_tour(num_cities);
         for (int i = 0; i < num_cities; ++i) {
-            current_tour[i] = i;
+            current_tour[i] = i;  // Inicjalizacja trasy miast
         }
 
+        // Generowanie losowej permutacji
         generate_random_permutation(current_tour);
 
-        // Zamiast wywołania "calculate_cost", używamy "Utilities::calculate_cost"
+        // Obliczanie kosztu trasy
         int current_cost = Utilities::calculate_cost(current_tour, distances);
 
+        // Sprawdzenie, czy aktualna trasa jest lepsza od dotychczasowej
         if (current_cost < min_cost) {
             min_cost = current_cost;
             best_tour = current_tour;
@@ -48,12 +55,14 @@ std::pair<std::vector<int>, int> tsp_random(const TSPInstance& instance) {
     std::chrono::duration<double, std::milli> milliseconds = end - start;
     std::chrono::duration<double, std::nano> nanoseconds = end - start;
 
-    std::cout << "Losowy Algorytm (z iteracjami)\n";
-    std::cout << "Czas wykonania: " << seconds.count() << " s\n";
-    std::cout << "Najlepszy koszt po " << iterations << " iteracjach: " << min_cost << "\n";
-
+    // Zapisanie wyników do pliku CSV
     SaveToCSV save("RandomResults.csv");
     save.saveResults("Random", seconds, milliseconds, nanoseconds, best_tour, min_cost);
 
     return {best_tour, min_cost};
+}
+
+// Funkcja do ustawienia ziarna dla rand() - do wywołania raz w programie głównym
+void initialize_random_seed() {
+    srand(static_cast<unsigned>(time(nullptr)));  // Inicjalizacja ziarna na podstawie aktualnego czasu
 }
