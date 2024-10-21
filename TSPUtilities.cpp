@@ -32,3 +32,11 @@ vector<vector<int>> Utilities::generate_random_matrix(int size, int minValue, in
     return matrix;
 }
 
+// Funkcja do obliczania silni
+int Utilities::factorial(int n) {
+    int result = 1;
+    for (int i = 2; i <= n; ++i) {
+        result *= i;
+    }
+    return result;
+}

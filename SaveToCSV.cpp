@@ -46,7 +46,7 @@ void SaveToCSV::saveResults(const string& algorithmName,
         // Na końcu zapisujemy koszt trasy
         csvFile << " | " << cost << "\n";
         csvFile.close();
-        cout << "Wyniki zapisano do pliku: " << filename << "\n";
+        //cout << "Wyniki zapisano do pliku: " << filename << "\n";
     } else {
         cerr << "Nie można otworzyć pliku: " << filename << "\n";
     }

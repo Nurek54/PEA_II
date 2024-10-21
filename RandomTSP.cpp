@@ -7,36 +7,42 @@
 #include <ctime>  // Do ustawienia ziarna dla rand()
 
 // Funkcja generująca losową permutację trasy
-void generate_random_permutation(std::vector<int>& tour) {
+void generate_random_permutation(vector<int>& tour) {
     int n = tour.size();
 
     // Algorytm Fisher-Yates do losowej permutacji
     for (int i = n - 1; i > 0; --i) {
         int j = rand() % (i + 1);  // Losowa liczba od 0 do i
-        std::swap(tour[i], tour[j]);
+        swap(tour[i], tour[j]);
     }
 }
 
 // Funkcja implementująca algorytm Random TSP z dynamiczną liczbą iteracji
-std::pair<std::vector<int>, int> tsp_random(const TSPInstance& instance) {
-    std::vector<std::vector<int>> distances = instance.getDistances();
+pair<vector<int>, int> tsp_random(const TSPInstance& instance) {
+    vector<vector<int>> distances = instance.getDistances();
     int num_cities = instance.getCityCount();
 
-    // Dynamiczna liczba iteracji: im więcej miast, tym więcej prób
-    int iterations = num_cities * num_cities * 10;
+    // Sprawdzenie, czy liczba miast jest wystarczająca do obliczenia (N-2)!
+    if (num_cities < 3) {
+        cerr << "Zbyt mała liczba miast, aby obliczyć (N-2)!\n";
+        return {{}, -1};
+    }
 
-    std::vector<int> best_tour;
+    // liczba iteracji: (N-2)!
+    int iterations = Utilities::factorial(num_cities - 2);
+
+    vector<int> best_tour;
     int min_cost = INT_MAX;
 
     // Próg akceptowalnego rozwiązania — jeśli znajdziemy trasę o takim koszcie, zakończymy wcześniej
-    const int acceptable_cost = 100;  // Można ustawić jako dynamiczny, zależny od problemu
+    const int acceptable_cost = 100;
 
     // Mierzenie czasu działania algorytmu
-    auto start = std::chrono::high_resolution_clock::now();
+    auto start = chrono::high_resolution_clock::now();
 
     // Wykonywanie wielu losowych tras i szukanie najlepszej
     for (int iter = 0; iter < iterations; ++iter) {
-        std::vector<int> current_tour(num_cities);
+        vector<int> current_tour(num_cities);
         for (int i = 0; i < num_cities; ++i) {
             current_tour[i] = i;  // Inicjalizacja trasy miast
         }
@@ -55,15 +61,15 @@ std::pair<std::vector<int>, int> tsp_random(const TSPInstance& instance) {
 
         // Przerwanie, jeśli znaleziono akceptowalnie dobry wynik
         if (min_cost <= acceptable_cost) {
-            std::cout << "Znaleziono akceptowalny wynik. Wczesne zakończenie iteracji.\n";
+            //cout << "Znaleziono akceptowalny wynik. Wczesne zakończenie iteracji.\n";
             break;
         }
     }
 
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> seconds = end - start;
-    std::chrono::duration<double, std::milli> milliseconds = end - start;
-    std::chrono::duration<double, std::nano> nanoseconds = end - start;
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double> seconds = end - start;
+    chrono::duration<double, milli> milliseconds = end - start;
+    chrono::duration<double, nano> nanoseconds = end - start;
 
     // Zapisanie wyników do pliku CSV
     SaveToCSV save("RandomResults.csv");

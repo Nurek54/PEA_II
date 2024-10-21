@@ -5,7 +5,6 @@
 #include <iostream>
 #include <climits>
 
-// Funkcja do generowania permutacji
 bool next_permutation(vector<int>& cities) {
     int n = cities.size();
     int i = n - 2;
@@ -25,7 +24,6 @@ bool next_permutation(vector<int>& cities) {
         j--;
     }
 
-    // Zamień cities[i] z cities[j]
     swap(cities[i], cities[j]);
 
     // Odwróć kolejność elementów po pozycji i
@@ -40,7 +38,7 @@ bool next_permutation(vector<int>& cities) {
     return true;
 }
 
-// Funkcja brute force do znajdowania najkrótszej trasy
+// Funkcja brute force
 pair<vector<int>, int> tsp_bruteforce(const TSPInstance& instance) {
     vector<vector<int>> distances = instance.getDistances();
     int num_cities = instance.getCityCount();

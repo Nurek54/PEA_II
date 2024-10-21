@@ -68,6 +68,7 @@ vector<vector<int>> TSPSimulation::generateRandomMatrix() {
 // Funkcja runSimulation() uruchamia symulację dla określonej liczby macierzy.
 // Dla każdej macierzy wywoływane są algorytmy: BruteForce, Nearest Neighbor i Random Algorithm.
 void TSPSimulation::runSimulation() {
+    cout << "Postep symulacji: ";  // Stała część tekstu
     for (int i = 0; i < numMatrices; ++i) {
         // Generowanie nowej macierzy dla każdej iteracji
         vector<vector<int>> matrix = generateRandomMatrix();
@@ -78,12 +79,19 @@ void TSPSimulation::runSimulation() {
         tsp_nearest_neighbor(instance);
         tsp_random(instance);
 
+        // Obliczanie procentu ukończenia symulacji
+        int progress = (i + 1) * 100 / numMatrices;  // Obliczenie postępu w procentach
+
+        // Przesunięcie kursora i nadpisywanie tylko wartości procentowej
+        cout << "\rPostep symulacji: " << progress << "%" << flush;
+
         // Krótkie opóźnienie między kolejnymi iteracjami symulacji
-        // Używamy sleep_for z opóźnieniem 50 milisekund, aby zredukować ryzyko,
-        // że generator losowy w kolejnych iteracjach zostanie zainicjalizowany w tej samej milisekundzie,
-        // co zwiększa szansę na bardziej unikalne macierze przy każdym wywołaniu.
         this_thread::sleep_for(chrono::milliseconds(50)); // 50 ms opóźnienia
     }
 
-    cout << "Symulacja zakonczona.\n";
+    cout << "\nSymulacja zakonczona.\n";
 }
+
+
+
+
