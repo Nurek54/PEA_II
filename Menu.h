@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+using namespace std;
+
 class Menu {
 public:
     // Funkcja obsługująca logikę menu
@@ -12,11 +14,11 @@ public:
 private:
     // Funkcje pomocnicze
     void showMenu();
-    std::string getFileNameFromUser(const std::string& prompt);
+    string getFileNameFromUser(const string& prompt);
     void saveMatrixToFile(const std::vector<std::vector<int>>& matrix, const std::string& filename);
 
     // Zmienna do przechowywania nazwy pliku z macierzą
-    std::string inputFilename;
+    string inputFilename;
     bool fileLoaded = false;
 
     // Funkcje odpowiedzialne za poszczególne opcje

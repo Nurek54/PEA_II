@@ -5,7 +5,9 @@
 #include <utility>  // std::pair
 #include "TSPInstance.h"
 
+using namespace std;
+
 // Deklaracja funkcji brute force, która zwraca najlepszą trasę oraz jej koszt
-std::pair<std::vector<int>, int> tsp_bruteforce(const TSPInstance& instance);
+pair<vector<int>, int> tsp_bruteforce(const TSPInstance& instance);
 
 #endif

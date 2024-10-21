@@ -31,15 +31,15 @@ TSPSimulation::TSPSimulation(int numMatrices, int matrixSize, int maxCost)
 // Funkcja generująca losową macierz odległości
 // Funkcja generateRandomMatrix() generuje losową macierz odległości o wymiarach
 // matrixSize x matrixSize, gdzie każdy element ma wartość z zakresu od -maxCost do maxCost.
-std::vector<std::vector<int>> TSPSimulation::generateRandomMatrix() {
-    std::vector<std::vector<int>> matrix(matrixSize, std::vector<int>(matrixSize));
+vector<vector<int>> TSPSimulation::generateRandomMatrix() {
+    vector<vector<int>> matrix(matrixSize, vector<int>(matrixSize));
 
     // Ziarno mieszające na podstawie czasu w nanosekundach i wartości rand()
     // Używamy czasu systemowego w nanosekundach do inicjalizacji generatora losowego (srand).
     // Aby dodatkowo zwiększyć losowość, dodajemy wynik wcześniejszego wywołania rand() do ziarna.
-    auto now = std::chrono::high_resolution_clock::now();
+    auto now = chrono::high_resolution_clock::now();
     auto duration = now.time_since_epoch();
-    unsigned long long nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count();
+    unsigned long long nanoseconds = chrono::duration_cast<chrono::nanoseconds>(duration).count();
 
     srand(nanoseconds + rand());  // Ustawienie nowego ziarna dla rand()
 
@@ -70,7 +70,7 @@ std::vector<std::vector<int>> TSPSimulation::generateRandomMatrix() {
 void TSPSimulation::runSimulation() {
     for (int i = 0; i < numMatrices; ++i) {
         // Generowanie nowej macierzy dla każdej iteracji
-        std::vector<std::vector<int>> matrix = generateRandomMatrix();
+        vector<vector<int>> matrix = generateRandomMatrix();
         TSPInstance instance(matrix);  // Przekazujemy macierz do obiektu TSPInstance
 
         // Uruchamianie wszystkich trzech algorytmów dla wygenerowanej macierzy
@@ -82,8 +82,8 @@ void TSPSimulation::runSimulation() {
         // Używamy sleep_for z opóźnieniem 50 milisekund, aby zredukować ryzyko,
         // że generator losowy w kolejnych iteracjach zostanie zainicjalizowany w tej samej milisekundzie,
         // co zwiększa szansę na bardziej unikalne macierze przy każdym wywołaniu.
-        std::this_thread::sleep_for(std::chrono::milliseconds(50)); // 50 ms opóźnienia
+        this_thread::sleep_for(chrono::milliseconds(50)); // 50 ms opóźnienia
     }
 
-    std::cout << "Symulacja zakonczona.\n";
+    cout << "Symulacja zakonczona.\n";
 }

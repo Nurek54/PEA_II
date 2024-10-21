@@ -2,24 +2,24 @@
 #include <fstream>
 #include <stdexcept>
 
-TSPInstance::TSPInstance(const std::string& filename) {
+TSPInstance::TSPInstance(const string& filename) {
     loadFromFile(filename);
 }
 
 // Nowy konstruktor przyjmujący macierz
-TSPInstance::TSPInstance(const std::vector<std::vector<int>>& matrix) {
+TSPInstance::TSPInstance(const vector<vector<int>>& matrix) {
     cityCount = matrix.size();
     costMatrix = matrix;
 }
 
-void TSPInstance::loadFromFile(const std::string& filename) {
-    std::ifstream file(filename);
+void TSPInstance::loadFromFile(const string& filename) {
+    ifstream file(filename);
     if (!file.is_open()) {
-        throw std::runtime_error("Unable to open file.");
+        throw runtime_error("Unable to open file.");
     }
 
     file >> cityCount;
-    costMatrix.resize(cityCount, std::vector<int>(cityCount));
+    costMatrix.resize(cityCount, vector<int>(cityCount));
 
     for (int i = 0; i < cityCount; ++i) {
         for (int j = 0; j < cityCount; ++j) {
@@ -28,7 +28,7 @@ void TSPInstance::loadFromFile(const std::string& filename) {
     }
 }
 
-const std::vector<std::vector<int>>& TSPInstance::getDistances() const {
+const vector<vector<int>>& TSPInstance::getDistances() const {
     return costMatrix;
 }
 

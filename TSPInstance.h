@@ -4,21 +4,23 @@
 #include <vector>
 #include <string>
 
+using namespace std;
+
 class TSPInstance {
 public:
     // Konstruktor przyjmujący nazwę pliku
-    TSPInstance(const std::string& filename);
+    TSPInstance(const string& filename);
 
     // Nowy konstruktor przyjmujący macierz
-    TSPInstance(const std::vector<std::vector<int>>& matrix);
+    TSPInstance(const vector<vector<int>>& matrix);
 
-    const std::vector<std::vector<int>>& getDistances() const;  // Zwraca macierz kosztów
+    const vector<vector<int>>& getDistances() const;  // Zwraca macierz kosztów
     int getCityCount() const;  // Zwraca liczbę miast
 
 private:
-    std::vector<std::vector<int>> costMatrix;  // Macierz kosztów
+    vector<vector<int>> costMatrix;  // Macierz kosztów
     int cityCount;  // Liczba miast
-    void loadFromFile(const std::string& filename);  // Wczytanie danych z pliku
+    void loadFromFile(const string& filename);  // Wczytanie danych z pliku
 };
 
 #endif // TSPINSTANCE_H

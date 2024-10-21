@@ -5,6 +5,8 @@
 #include <vector>
 #include <utility>  // Dla std::pair
 
-std::pair<std::vector<int>, int> tsp_random(const TSPInstance& instance);
+using namespace std;
+
+pair<vector<int>, int> tsp_random(const TSPInstance& instance);
 
 #endif // RANDOMTSP_H

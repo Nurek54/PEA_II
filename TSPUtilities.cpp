@@ -3,7 +3,7 @@
 #include <ctime>
 
 // Funkcja obliczająca koszt trasy
-int Utilities::calculate_cost(const std::vector<int>& path, const std::vector<std::vector<int>>& distances) {
+int Utilities::calculate_cost(const vector<int>& path, const vector<vector<int>>& distances) {
     int cost = 0;
     int num_cities = path.size();
     for (int i = 0; i < num_cities - 1; ++i) {
@@ -14,8 +14,8 @@ int Utilities::calculate_cost(const std::vector<int>& path, const std::vector<st
 }
 
 // Funkcja generująca losową macierz odległości (kosztów)
-std::vector<std::vector<int>> Utilities::generate_random_matrix(int size, int minValue, int maxValue) {
-    std::vector<std::vector<int>> matrix(size, std::vector<int>(size));
+vector<vector<int>> Utilities::generate_random_matrix(int size, int minValue, int maxValue) {
+    vector<vector<int>> matrix(size, vector<int>(size));
 
     // Ustawienie ziarna dla funkcji rand()
     srand(time(nullptr));

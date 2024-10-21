@@ -5,6 +5,8 @@
 #include <string>
 #include "TSPInstance.h"
 
+using namespace std;
+
 class TSPSimulation {
 public:
     // Konstruktor
@@ -19,7 +21,7 @@ private:
     int maxCost;
 
     // Funkcja do generowania losowej macierzy
-    std::vector<std::vector<int>> generateRandomMatrix();
+    vector<vector<int>> generateRandomMatrix();
 };
 
 #endif // TSPSIMULATION_H

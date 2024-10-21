@@ -5,16 +5,18 @@
 #include <vector>
 #include <chrono>
 
+using namespace std;
+
 class SaveToCSV {
 public:
-    SaveToCSV(const std::string& filename);
-    void saveResults(const std::string& algorithmName,
-                     const std::chrono::duration<double>& seconds,
-                     const std::chrono::duration<double, std::milli>& milliseconds,
-                     const std::chrono::duration<double, std::nano>& nanoseconds,
-                     const std::vector<int>& path, int cost);
+    SaveToCSV(const string& filename);
+    void saveResults(const string& algorithmName,
+                     const chrono::duration<double>& seconds,
+                     const chrono::duration<double, std::milli>& milliseconds,
+                     const chrono::duration<double, std::nano>& nanoseconds,
+                     const vector<int>& path, int cost);
 private:
-    std::string filename;
+    string filename;
     bool isFileNew;  // Flaga, która sprawdza, czy plik jest nowy (czy nagłówki zostały już zapisane)
 };
 

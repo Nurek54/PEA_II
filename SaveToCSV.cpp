@@ -4,23 +4,23 @@
 #include <iostream>
 
 // Konstruktor klasy SaveToCSV
-SaveToCSV::SaveToCSV(const std::string& filename)
+SaveToCSV::SaveToCSV(const string& filename)
         : filename(filename), isFileNew(false) {
     // Sprawdzenie, czy plik istnieje
-    std::ifstream fileCheck(filename);
+    ifstream fileCheck(filename);
     if (!fileCheck.good()) {
         isFileNew = true;  // Plik nie istnieje, więc jest nowy
     }
     fileCheck.close();
 }
 
-void SaveToCSV::saveResults(const std::string& algorithmName,
-                            const std::chrono::duration<double>& seconds,
-                            const std::chrono::duration<double, std::milli>& milliseconds,
-                            const std::chrono::duration<double, std::nano>& nanoseconds,
-                            const std::vector<int>& path, int cost) {
+void SaveToCSV::saveResults(const string& algorithmName,
+                            const chrono::duration<double>& seconds,
+                            const chrono::duration<double, milli>& milliseconds,
+                            const chrono::duration<double, nano>& nanoseconds,
+                            const vector<int>& path, int cost) {
 
-    std::ofstream csvFile(filename, std::ios::app);  // Otwórz plik w trybie dodawania
+    ofstream csvFile(filename, ios::app);  // Otwórz plik w trybie dodawania
     if (csvFile.is_open()) {
         // Zapisz nagłówki i nazwę algorytmu tylko raz (jeśli plik jest nowy)
         if (isFileNew) {
@@ -29,7 +29,7 @@ void SaveToCSV::saveResults(const std::string& algorithmName,
         }
 
         // Zapisujemy sekcje danych oddzielone " | "
-        csvFile << std::fixed << std::setprecision(6)
+        csvFile << fixed << setprecision(6)
                 << algorithmName << " | "
                 << seconds.count() << " | "
                 << milliseconds.count() << " | "
@@ -46,8 +46,8 @@ void SaveToCSV::saveResults(const std::string& algorithmName,
         // Na końcu zapisujemy koszt trasy
         csvFile << " | " << cost << "\n";
         csvFile.close();
-        std::cout << "Wyniki zapisano do pliku: " << filename << "\n";
+        cout << "Wyniki zapisano do pliku: " << filename << "\n";
     } else {
-        std::cerr << "Nie można otworzyć pliku: " << filename << "\n";
+        cerr << "Nie można otworzyć pliku: " << filename << "\n";
     }
 }

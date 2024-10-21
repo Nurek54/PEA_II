@@ -17,15 +17,19 @@ void generate_random_permutation(std::vector<int>& tour) {
     }
 }
 
-// Funkcja implementująca algorytm Random TSP
+// Funkcja implementująca algorytm Random TSP z dynamiczną liczbą iteracji
 std::pair<std::vector<int>, int> tsp_random(const TSPInstance& instance) {
     std::vector<std::vector<int>> distances = instance.getDistances();
     int num_cities = instance.getCityCount();
 
-    // Zwiększona liczba iteracji, aby zwiększyć szanse na lepszy wynik
-    int iterations = 10;
+    // Dynamiczna liczba iteracji: im więcej miast, tym więcej prób
+    int iterations = num_cities * num_cities * 10;
+
     std::vector<int> best_tour;
     int min_cost = INT_MAX;
+
+    // Próg akceptowalnego rozwiązania — jeśli znajdziemy trasę o takim koszcie, zakończymy wcześniej
+    const int acceptable_cost = 100;  // Można ustawić jako dynamiczny, zależny od problemu
 
     // Mierzenie czasu działania algorytmu
     auto start = std::chrono::high_resolution_clock::now();
@@ -47,6 +51,12 @@ std::pair<std::vector<int>, int> tsp_random(const TSPInstance& instance) {
         if (current_cost < min_cost) {
             min_cost = current_cost;
             best_tour = current_tour;
+        }
+
+        // Przerwanie, jeśli znaleziono akceptowalnie dobry wynik
+        if (min_cost <= acceptable_cost) {
+            std::cout << "Znaleziono akceptowalny wynik. Wczesne zakończenie iteracji.\n";
+            break;
         }
     }
 
