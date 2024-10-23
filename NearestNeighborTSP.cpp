@@ -1,6 +1,6 @@
 #include "NearestNeighborTSP.h"
 #include "SaveToCSV.h"
-#include "TSPUtilities.h"  // Do obliczania kosztu trasy
+#include "TSPUtilities.h"
 #include <limits>
 #include <chrono>
 #include <iostream>
@@ -11,11 +11,10 @@ pair<vector<int>, int> tsp_nearest_neighbor(const TSPInstance& instance) {
     vector<vector<int>> distances = instance.getDistances();
     int num_cities = instance.getCityCount();
 
-    vector<int> tour;
+    vector<int> tour; //Będzie przechowywał miasta w kolejnosci jakiej zostały odwiedzane
     vector<bool> visited(num_cities, false);
 
-    // Ustawienie ziarna dla funkcji rand(), aby za każdym razem uzyskać inne losowe wyniki
-    srand(static_cast<unsigned int>(time(0)));
+    srand(time(NULL));
 
     // Wybór losowego miasta początkowego
     int currentCity = rand() % num_cities;
@@ -26,7 +25,7 @@ pair<vector<int>, int> tsp_nearest_neighbor(const TSPInstance& instance) {
 
     for (int i = 1; i < num_cities; ++i) {
         int nearestCity = -1;
-        int minCost = numeric_limits<int>::max();
+        int minCost = INT_MAX;
 
         for (int j = 0; j < num_cities; ++j) {
             if (!visited[j] && distances[currentCity][j] < minCost) {

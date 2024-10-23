@@ -3,7 +3,7 @@
 
 #include "TSPInstance.h"
 #include <vector>
-#include <utility> // for std::pair
+#include <utility> // std::pair
 
 using namespace std;
 

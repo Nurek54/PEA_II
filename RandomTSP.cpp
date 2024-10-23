@@ -1,15 +1,14 @@
 #include "RandomTSP.h"
 #include "SaveToCSV.h"
-#include "TSPUtilities.h"  // Do obliczania kosztu trasy
+#include "TSPUtilities.h"
 #include <cstdlib>
 #include <chrono>
 #include <iostream>
-#include <ctime>  // Do ustawienia ziarna dla rand()
+#include <ctime>
 
 // Funkcja generująca losową permutację trasy
 void generate_random_permutation(vector<int>& tour) {
     int n = tour.size();
-
     // Algorytm Fisher-Yates do losowej permutacji
     for (int i = n - 1; i > 0; --i) {
         int j = rand() % (i + 1);  // Losowa liczba od 0 do i
@@ -17,7 +16,6 @@ void generate_random_permutation(vector<int>& tour) {
     }
 }
 
-// Funkcja implementująca algorytm Random TSP z dynamiczną liczbą iteracji
 pair<vector<int>, int> tsp_random(const TSPInstance& instance) {
     vector<vector<int>> distances = instance.getDistances();
     int num_cities = instance.getCityCount();
@@ -34,10 +32,6 @@ pair<vector<int>, int> tsp_random(const TSPInstance& instance) {
     vector<int> best_tour;
     int min_cost = INT_MAX;
 
-    // Próg akceptowalnego rozwiązania — jeśli znajdziemy trasę o takim koszcie, zakończymy wcześniej
-    const int acceptable_cost = 100;
-
-    // Mierzenie czasu działania algorytmu
     auto start = chrono::high_resolution_clock::now();
 
     // Wykonywanie wielu losowych tras i szukanie najlepszej
@@ -58,14 +52,9 @@ pair<vector<int>, int> tsp_random(const TSPInstance& instance) {
             min_cost = current_cost;
             best_tour = current_tour;
         }
-
-        // Przerwanie, jeśli znaleziono akceptowalnie dobry wynik
-        if (min_cost <= acceptable_cost) {
-            //cout << "Znaleziono akceptowalny wynik. Wczesne zakończenie iteracji.\n";
-            break;
-        }
     }
 
+    // Pomiar czasu wykonania algorytmu
     auto end = chrono::high_resolution_clock::now();
     chrono::duration<double> seconds = end - start;
     chrono::duration<double, milli> milliseconds = end - start;
@@ -80,5 +69,5 @@ pair<vector<int>, int> tsp_random(const TSPInstance& instance) {
 
 // Funkcja do ustawienia ziarna dla rand() - do wywołania raz w programie głównym
 void initialize_random_seed() {
-    srand(static_cast<unsigned>(time(nullptr)));  // Inicjalizacja ziarna na podstawie aktualnego czasu
+    srand(static_cast<unsigned>(time(nullptr)));
 }

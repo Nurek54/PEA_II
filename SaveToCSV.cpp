@@ -2,6 +2,8 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
+#include <algorithm>  // dla std::replace
 
 // Konstruktor klasy SaveToCSV
 SaveToCSV::SaveToCSV(const string& filename)
@@ -14,6 +16,15 @@ SaveToCSV::SaveToCSV(const string& filename)
     fileCheck.close();
 }
 
+string replaceDotWithComma(double value) {
+    ostringstream ss;
+    ss << fixed << std::setprecision(6) << value;
+    string result = ss.str();
+    replace(result.begin(), result.end(), '.', ',');
+    return result;
+}
+
+// Funkcja do zapisu wyników dla pojedynczej iteracji
 void SaveToCSV::saveResults(const string& algorithmName,
                             const chrono::duration<double>& seconds,
                             const chrono::duration<double, milli>& milliseconds,
@@ -28,12 +39,11 @@ void SaveToCSV::saveResults(const string& algorithmName,
             isFileNew = false;  // Ustaw flagę na false, aby nagłówki nie były już zapisywane
         }
 
-        // Zapisujemy sekcje danych oddzielone " | "
-        csvFile << fixed << setprecision(6)
-                << algorithmName << " | "
-                << seconds.count() << " | "
-                << milliseconds.count() << " | "
-                << nanoseconds.count() << " | ";
+        // Zapisujemy dane z ręczną zamianą kropki na przecinek
+        csvFile << algorithmName << " | "
+                << replaceDotWithComma(seconds.count()) << " | "
+                << replaceDotWithComma(milliseconds.count()) << " | "
+                << replaceDotWithComma(nanoseconds.count()) << " | ";
 
         // Zapisujemy miasta na trasie oddzielone przecinkami ","
         for (size_t i = 0; i < path.size(); ++i) {
@@ -46,8 +56,18 @@ void SaveToCSV::saveResults(const string& algorithmName,
         // Na końcu zapisujemy koszt trasy
         csvFile << " | " << cost << "\n";
         csvFile.close();
-        //cout << "Wyniki zapisano do pliku: " << filename << "\n";
     } else {
         cerr << "Nie można otworzyć pliku: " << filename << "\n";
     }
+}
+
+// Funkcja do aktualizowania sum wyników z każdej iteracji
+void SaveToCSV::updateTotals(const chrono::duration<double>& seconds,
+                             const chrono::duration<double, milli>& milliseconds,
+                             const chrono::duration<double, nano>& nanoseconds,
+                             int cost) {
+    totalSeconds += seconds.count();
+    totalMilliseconds += milliseconds.count();
+    totalNanoseconds += nanoseconds.count();
+    totalCost += cost;
 }

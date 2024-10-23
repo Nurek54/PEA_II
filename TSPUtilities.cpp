@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <ctime>
 
-// Funkcja obliczająca koszt trasy
 int Utilities::calculate_cost(const vector<int>& path, const vector<vector<int>>& distances) {
     int cost = 0;
     int num_cities = path.size();
@@ -18,7 +17,7 @@ vector<vector<int>> Utilities::generate_random_matrix(int size, int minValue, in
     vector<vector<int>> matrix(size, vector<int>(size));
 
     // Ustawienie ziarna dla funkcji rand()
-    srand(time(nullptr));
+    srand(time(NULL));
 
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size; ++j) {
