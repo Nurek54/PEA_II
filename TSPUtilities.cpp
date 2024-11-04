@@ -39,3 +39,13 @@ int Utilities::factorial(int n) {
     }
     return result;
 }
+
+// Własna funkcja do sprawdzania, czy miasto jest w ścieżce
+bool Utilities::isCityInPath(const vector<int>& path, int city) {
+    for (size_t i = 0; i < path.size(); ++i) {
+        if (path[i] == city) {
+            return true;
+        }
+    }
+    return false;
+}

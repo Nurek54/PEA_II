@@ -8,26 +8,26 @@ using namespace std;
 
 class Menu {
 public:
-    // Funkcja obsługująca logikę menu
+    Menu() : fileLoaded(false), inputFilename("") {}
+
     void run();
+    void showMenu();
 
 private:
-    // Funkcje pomocnicze
-    void showMenu();
-    string getFileNameFromUser(const string& prompt);
-    void saveMatrixToFile(const std::vector<std::vector<int>>& matrix, const std::string& filename);
-
-    // Zmienna do przechowywania nazwy pliku z macierzą
+    bool fileLoaded;
     string inputFilename;
-    bool fileLoaded = false;
 
-    // Funkcje odpowiedzialne za poszczególne opcje
-    void bruteForceOption();
-    void nearestNeighborOption();
-    void randomAlgorithmOption();
+    // Funkcje pomocnicze
+    string getFileNameFromUser(const string& prompt);
+    void saveMatrixToFile(const vector<vector<int>>& matrix, const string& filename);
+
+    // Opcje menu
+    void branchAndBoundBFSOption();
+    void branchAndBoundDFSOption();
+    void branchAndBoundBestFirstOption();
     void generateRandomMatrixOption();
     void loadMatrixFromFileOption();
     void runSimulationOption();
 };
 
-#endif // MENU_H
+#endif

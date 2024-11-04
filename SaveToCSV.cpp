@@ -3,7 +3,6 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
-#include <algorithm>  // dla std::replace
 
 // Konstruktor klasy SaveToCSV
 SaveToCSV::SaveToCSV(const string& filename)
@@ -16,11 +15,17 @@ SaveToCSV::SaveToCSV(const string& filename)
     fileCheck.close();
 }
 
+// Własna funkcja do zamiany kropki na przecinek w stringu
 string replaceDotWithComma(double value) {
     ostringstream ss;
     ss << fixed << std::setprecision(6) << value;
     string result = ss.str();
-    replace(result.begin(), result.end(), '.', ',');
+    // Zamieniamy kropki na przecinki bez użycia std::replace
+    for (size_t i = 0; i < result.length(); ++i) {
+        if (result[i] == '.') {
+            result[i] = ',';
+        }
+    }
     return result;
 }
 
@@ -49,7 +54,7 @@ void SaveToCSV::saveResults(const string& algorithmName,
         for (size_t i = 0; i < path.size(); ++i) {
             csvFile << path[i];
             if (i != path.size() - 1) {
-                csvFile << ",";  // Oddziel miasta przecinkami
+                csvFile << ",";  // Oddziela miasta przecinkami
             }
         }
 
@@ -61,7 +66,7 @@ void SaveToCSV::saveResults(const string& algorithmName,
     }
 }
 
-// Funkcja do aktualizowania sum wyników z każdej iteracji
+// Funkcja do aktualizowania sum wyników z każdej iteracji (jeśli jest używana)
 void SaveToCSV::updateTotals(const chrono::duration<double>& seconds,
                              const chrono::duration<double, milli>& milliseconds,
                              const chrono::duration<double, nano>& nanoseconds,

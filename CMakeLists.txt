@@ -6,12 +6,6 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(PEA_I main.cpp
         TSPInstance.cpp
         TSPInstance.h
-        BruteForceTSP.cpp
-        BruteForceTSP.h
-        NearestNeighborTSP.cpp
-        NearestNeighborTSP.h
-        RandomTSP.cpp
-        RandomTSP.h
         SaveToCSV.cpp
         SaveToCSV.h
         TSPUtilities.cpp
@@ -19,4 +13,11 @@ add_executable(PEA_I main.cpp
         TSPSimulation.cpp
         TSPSimulation.h
         Menu.cpp
-        Menu.h)
+        Menu.h
+        BranchAndBoundBFS.cpp
+        BranchAndBoundBFS.h
+        BranchAndBoundBFS.h
+        BranchAndBoundDFS.cpp
+        BranchAndBoundDFS.h
+        BranchAndBoundBestFirst.cpp
+        BranchAndBoundBestFirst.h)
