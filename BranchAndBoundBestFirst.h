@@ -1,18 +1,24 @@
 #ifndef BRANCHANDBOUNDBESTFIRST_H
 #define BRANCHANDBOUNDBESTFIRST_H
 
-#include <vector>
 #include "TSPInstance.h"
-
-using namespace std;
+#include <vector>
+#include <utility>
 
 class BranchAndBoundBestFirst {
 public:
-    BranchAndBoundBestFirst() {}
-    pair<vector<int>, int> solve(const TSPInstance& instance);
+    std::pair<std::vector<int>, int> solve(const TSPInstance& instance);
 
 private:
-    int calculateLowerBound(const vector<vector<int>>& distances, const vector<int>& path);
+    struct Node {
+        std::vector<int> path;     // Aktualna ścieżka
+        int cost;                  // Koszt dotychczasowej ścieżki
+        int lower_bound;           // Dolne ograniczenie (koszt + oszacowanie)
+        int level;                 // Poziom drzewa (liczba odwiedzonych miast)
+    };
+
+    int calculateLowerBound(const std::vector<std::vector<int>>& distances, const std::vector<int>& path);
+    void insertNode(std::vector<Node>& nodeList, const Node& node);  // Wstawia węzeł do listy zachowując sortowanie
 };
 
-#endif
+#endif // BRANCHANDBOUNDBESTFIRST_H

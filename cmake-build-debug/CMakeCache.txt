@@ -243,6 +243,15 @@ CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Value Computed by CMake
+PEA_II_BINARY_DIR:STATIC=C:/Users/g_sie/OneDrive/Pulpit/PEA_II/cmake-build-debug
+
+//Value Computed by CMake
+PEA_II_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+PEA_II_SOURCE_DIR:STATIC=C:/Users/g_sie/OneDrive/Pulpit/PEA_II
+
+//Value Computed by CMake
 PEA_I_BINARY_DIR:STATIC=C:/Users/g_sie/OneDrive/Pulpit/PEA_II/cmake-build-debug
 
 //Value Computed by CMake

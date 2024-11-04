@@ -1,17 +1,20 @@
 #ifndef BRANCHANDBOUNDBFS_H
 #define BRANCHANDBOUNDBFS_H
 
-#include <vector>
 #include "TSPInstance.h"
-
-using namespace std;
+#include <vector>
+#include <utility>
 
 class BranchAndBoundBFS {
 public:
-    BranchAndBoundBFS() {}
-    pair<vector<int>, int> solve(const TSPInstance& instance);
+    std::pair<std::vector<int>, int> solve(const TSPInstance& instance);
 
 private:
+    struct Node {
+        std::vector<int> path; // Aktualna ścieżka
+        int cost;              // Koszt aktualnej ścieżki
+        int level;             // Poziom w drzewie (liczba odwiedzonych miast)
+    };
 };
 
-#endif
+#endif // BRANCHANDBOUNDBFS_H

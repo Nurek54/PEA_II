@@ -12,12 +12,12 @@ add_executable(PEA_I main.cpp
         TSPUtilities.h
         TSPSimulation.cpp
         TSPSimulation.h
-        Menu.cpp
-        Menu.h
         BranchAndBoundBFS.cpp
         BranchAndBoundBFS.h
         BranchAndBoundBFS.h
         BranchAndBoundDFS.cpp
         BranchAndBoundDFS.h
         BranchAndBoundBestFirst.cpp
-        BranchAndBoundBestFirst.h)
+        BranchAndBoundBestFirst.h
+        ConfigReader.cpp
+        ConfigReader.h)

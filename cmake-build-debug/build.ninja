@@ -79,12 +79,6 @@ build CMakeFiles/PEA_I.dir/TSPSimulation.cpp.obj: CXX_COMPILER__PEA_I_unscanned_
   OBJECT_DIR = CMakeFiles\PEA_I.dir
   OBJECT_FILE_DIR = CMakeFiles\PEA_I.dir
 
-build CMakeFiles/PEA_I.dir/Menu.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA_II/Menu.cpp || cmake_object_order_depends_target_PEA_I
-  DEP_FILE = CMakeFiles\PEA_I.dir\Menu.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\PEA_I.dir
-  OBJECT_FILE_DIR = CMakeFiles\PEA_I.dir
-
 build CMakeFiles/PEA_I.dir/BranchAndBoundBFS.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA_II/BranchAndBoundBFS.cpp || cmake_object_order_depends_target_PEA_I
   DEP_FILE = CMakeFiles\PEA_I.dir\BranchAndBoundBFS.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
@@ -103,6 +97,12 @@ build CMakeFiles/PEA_I.dir/BranchAndBoundBestFirst.cpp.obj: CXX_COMPILER__PEA_I_
   OBJECT_DIR = CMakeFiles\PEA_I.dir
   OBJECT_FILE_DIR = CMakeFiles\PEA_I.dir
 
+build CMakeFiles/PEA_I.dir/ConfigReader.cpp.obj: CXX_COMPILER__PEA_I_unscanned_Debug C$:/Users/g_sie/OneDrive/Pulpit/PEA_II/ConfigReader.cpp || cmake_object_order_depends_target_PEA_I
+  DEP_FILE = CMakeFiles\PEA_I.dir\ConfigReader.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\PEA_I.dir
+  OBJECT_FILE_DIR = CMakeFiles\PEA_I.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target PEA_I
@@ -111,7 +111,7 @@ build CMakeFiles/PEA_I.dir/BranchAndBoundBestFirst.cpp.obj: CXX_COMPILER__PEA_I_
 #############################################
 # Link the executable PEA_I.exe
 
-build PEA_I.exe: CXX_EXECUTABLE_LINKER__PEA_I_Debug CMakeFiles/PEA_I.dir/main.cpp.obj CMakeFiles/PEA_I.dir/TSPInstance.cpp.obj CMakeFiles/PEA_I.dir/SaveToCSV.cpp.obj CMakeFiles/PEA_I.dir/TSPUtilities.cpp.obj CMakeFiles/PEA_I.dir/TSPSimulation.cpp.obj CMakeFiles/PEA_I.dir/Menu.cpp.obj CMakeFiles/PEA_I.dir/BranchAndBoundBFS.cpp.obj CMakeFiles/PEA_I.dir/BranchAndBoundDFS.cpp.obj CMakeFiles/PEA_I.dir/BranchAndBoundBestFirst.cpp.obj
+build PEA_I.exe: CXX_EXECUTABLE_LINKER__PEA_I_Debug CMakeFiles/PEA_I.dir/main.cpp.obj CMakeFiles/PEA_I.dir/TSPInstance.cpp.obj CMakeFiles/PEA_I.dir/SaveToCSV.cpp.obj CMakeFiles/PEA_I.dir/TSPUtilities.cpp.obj CMakeFiles/PEA_I.dir/TSPSimulation.cpp.obj CMakeFiles/PEA_I.dir/BranchAndBoundBFS.cpp.obj CMakeFiles/PEA_I.dir/BranchAndBoundDFS.cpp.obj CMakeFiles/PEA_I.dir/BranchAndBoundBestFirst.cpp.obj CMakeFiles/PEA_I.dir/ConfigReader.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\PEA_I.dir

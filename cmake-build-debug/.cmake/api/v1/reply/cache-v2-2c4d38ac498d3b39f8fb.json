@@ -1270,6 +1270,42 @@
 			"value" : "FALSE"
 		},
 		{
+			"name" : "PEA_II_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "C:/Users/g_sie/OneDrive/Pulpit/PEA_II/cmake-build-debug"
+		},
+		{
+			"name" : "PEA_II_IS_TOP_LEVEL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "ON"
+		},
+		{
+			"name" : "PEA_II_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "C:/Users/g_sie/OneDrive/Pulpit/PEA_II"
+		},
+		{
 			"name" : "PEA_I_BINARY_DIR",
 			"properties" : 
 			[
