@@ -2,28 +2,26 @@
 #define CONFIGREADER_H
 
 #include <string>
-#include <unordered_map>
-
-using namespace std;
+#include <map>
+#include <vector>
 
 class ConfigReader {
 public:
-    ConfigReader(const string& filename);
+    ConfigReader(const std::string& filename);
     bool parseConfig();
 
-    // Metody dostępu do poszczególnych parametrów
-    string getAlgorithm() const;
-    string getDistanceMatrixFile() const;
+    std::vector<std::string> getAlgorithms() const;
+    std::string getDistanceMatrixFile() const;
     bool getRunSimulation() const;
     int getNumMatrices() const;
     int getMatrixSize() const;
     int getMaxCost() const;
-private:
-    string filename;
-    unordered_map<string, string> configData;
 
-    // Funkcja pomocnicza do usuwania białych znaków
-    string trim(const string& str);
+private:
+    std::string filename;
+    std::map<std::string, std::string> configData;
+
+    std::string trim(const std::string& str) const; // Dodano 'const' na końcu
 };
 
-#endif
+#endif // CONFIGREADER_H

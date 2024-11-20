@@ -1,6 +1,7 @@
 #include "ConfigReader.h"
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 ConfigReader::ConfigReader(const std::string& filename) {
     this->filename = filename;
@@ -24,15 +25,9 @@ bool ConfigReader::parseConfig() {
         }
 
         // Szukamy pozycji znaku '='
-        int delimiterPos = -1;
-        for (int i = 0; i < line.length(); i++) {
-            if (line[i] == '=') {
-                delimiterPos = i;
-                break;
-            }
-        }
+        size_t delimiterPos = line.find('=');
 
-        if (delimiterPos == -1) {
+        if (delimiterPos == std::string::npos) {
             std::cout << "Nieprawidłowy format linii w pliku konfiguracyjnym: " << line << std::endl;
             continue;
         }
@@ -53,12 +48,22 @@ bool ConfigReader::parseConfig() {
     return true;
 }
 
-std::string ConfigReader::getAlgorithm() const {
-    if (configData.count("algorithm") > 0) {
-        return configData.find("algorithm")->second;
-    } else {
-        return "";
+std::vector<std::string> ConfigReader::getAlgorithms() const {
+    std::vector<std::string> algorithms;
+    if (configData.count("algorithms") > 0) {
+        std::string value = configData.find("algorithms")->second;
+        // Rozdzielamy wartość po przecinku
+        std::istringstream ss(value);
+        std::string item;
+        while (std::getline(ss, item, ',')) {
+            item = trim(item); // 'trim' musi być const
+            algorithms.push_back(item);
+        }
+    } else if (configData.count("algorithm") > 0) {
+        // Dla kompatybilności wstecznej, jeśli używany jest klucz 'algorithm'
+        algorithms.push_back(configData.find("algorithm")->second);
     }
+    return algorithms;
 }
 
 std::string ConfigReader::getDistanceMatrixFile() const {
@@ -106,20 +111,20 @@ int ConfigReader::getMaxCost() const {
     }
 }
 
-std::string ConfigReader::trim(const std::string& str) {
-    int start = 0;
+std::string ConfigReader::trim(const std::string& str) const {
+    size_t start = 0;
     while (start < str.length() && (str[start] == ' ' || str[start] == '\t' || str[start] == '\n' || str[start] == '\r')) {
         start++;
     }
 
-    int end = str.length() - 1;
-    while (end >= start && (str[end] == ' ' || str[end] == '\t' || str[end] == '\n' || str[end] == '\r')) {
+    size_t end = str.length();
+    while (end > start && (str[end - 1] == ' ' || str[end - 1] == '\t' || str[end - 1] == '\n' || str[end - 1] == '\r')) {
         end--;
     }
 
-    if (start > end) {
+    if (start >= end) {
         return "";
     } else {
-        return str.substr(start, end - start + 1);
+        return str.substr(start, end - start);
     }
 }
