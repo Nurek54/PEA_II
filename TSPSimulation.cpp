@@ -3,83 +3,87 @@
 #include "BranchAndBoundBFS.h"
 #include "BranchAndBoundDFS.h"
 #include "BranchAndBoundBestFirst.h"
-#include "TSPUtilities.h"
-#include <cstdlib>    // Do rand() i srand()
+#include <cstdlib>
 #include <iostream>
-#include <chrono>     // Do opóźnień i dokładnego czasu
-#include <thread>     // Do sleep_for
-#include <ctime>      // Do time()
+#include <chrono>
+#include <thread>
+#include <ctime>
 
-// Funkcja mieszająca wartości rand() dla dodatkowej losowości
 void mixRand() {
     for (int i = 0; i < 10; ++i) {
-        rand();  // Mieszaj wartości rand()
+        rand();
     }
 }
 
-// Konstruktor ustawia parametry symulacji
 TSPSimulation::TSPSimulation(int numMatrices, int matrixSize, int maxCost)
-        : numMatrices(numMatrices), matrixSize(matrixSize), maxCost(maxCost) {
-    // Nic nie zmieniamy w konstruktorze
-}
+        : numMatrices(numMatrices), matrixSize(matrixSize), maxCost(maxCost) {}
 
-// Funkcja generująca losową macierz odległości
-vector<vector<int>> TSPSimulation::generateRandomMatrix() {
-    vector<vector<int>> matrix(matrixSize, vector<int>(matrixSize));
+int** TSPSimulation::generateRandomMatrix() {
+    int** matrix = new int*[matrixSize];
+    for (int i = 0; i < matrixSize; ++i) {
+        matrix[i] = new int[matrixSize];
+    }
 
-    // Ziarno mieszające na podstawie czasu w nanosekundach i wartości rand()
-    auto now = chrono::high_resolution_clock::now();
+    auto now = std::chrono::high_resolution_clock::now();
     auto duration = now.time_since_epoch();
-    unsigned long long nanoseconds = chrono::duration_cast<chrono::nanoseconds>(duration).count();
+    unsigned long long nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count();
 
-    srand(static_cast<unsigned int>(nanoseconds + rand()));  // Ustawienie nowego ziarna dla rand()
+    srand(static_cast<unsigned int>(nanoseconds + rand()));
 
-    // Generowanie wartości losowych dla każdego elementu macierzy
     for (int i = 0; i < matrixSize; ++i) {
         for (int j = 0; j < matrixSize; ++j) {
             if (i == j) {
-                // Wartości na przekątnej (koszt przejścia z miasta do siebie samego) są -1
                 matrix[i][j] = -1;
             } else {
-                // Losowanie wartości od 1 do maxCost
-                matrix[i][j] = rand() % maxCost + 1;  // Gwarantuje wartości od 1 do maxCost
+                matrix[i][j] = rand() % maxCost + 1;
             }
         }
     }
 
-    // Mieszanie wartości rand() dla większej losowości przed następną macierzą
     mixRand();
 
-    return matrix;  // Zwracamy wygenerowaną macierz
+    return matrix;
 }
 
-// Funkcja uruchamiająca symulację
 void TSPSimulation::runSimulation() {
-    cout << "Postęp symulacji: ";  // Stała część tekstu
+    std::cout << "Postęp symulacji: ";
     for (int i = 0; i < numMatrices; ++i) {
-        // Generowanie nowej macierzy dla każdej iteracji
-        vector<vector<int>> matrix = generateRandomMatrix();
-        TSPInstance instance(matrix);  // Przekazujemy macierz do obiektu TSPInstance
+        int** matrix = generateRandomMatrix();
+        TSPInstance instance(matrix, matrixSize);
+        const int* const* distances = instance.getDistances();
+        int numCities = instance.getCityCount();
+
+        // Konwersja const int* const* na const int** (usunięcie const z pośrednich wskaźników)
+        auto mutableDistances = const_cast<const int**>(distances);
 
         // Uruchamianie wszystkich trzech algorytmów dla wygenerowanej macierzy
-        BranchAndBoundBFS bfsSolver;
-        bfsSolver.solve(instance);
+        BranchAndBoundBFS bfsSolver(mutableDistances, numCities);
+        auto bfsResult = bfsSolver.solve();
+        std::cout << "BFS - Koszt: " << bfsResult.cost << "\n";
 
-        BranchAndBoundDFS dfsSolver;
-        dfsSolver.solve(instance);
+        BranchAndBoundDFS dfsSolver(mutableDistances, numCities);
+        auto dfsResult = dfsSolver.solve();
+        std::cout << "DFS - Koszt: " << dfsResult.cost << "\n";
 
-        BranchAndBoundBestFirst bestFirstSolver;
-        bestFirstSolver.solve(instance);
+        BranchAndBoundBestFirst bestFirstSolver(mutableDistances, numCities);
+        auto bestFirstResult = bestFirstSolver.solve(instance);
+        std::cout << "Best First - Koszt: " << bestFirstResult.cost << "\n";
 
         // Obliczanie procentu ukończenia symulacji
-        int progress = (i + 1) * 100 / numMatrices;  // Obliczenie postępu w procentach
+        int progress = (i + 1) * 100 / numMatrices;
 
         // Przesunięcie kursora i nadpisywanie tylko wartości procentowej
-        cout << "\rPostęp symulacji: " << progress << "%" << flush;
+        std::cout << "\rPostęp symulacji: " << progress << "%" << std::flush;
 
         // Krótkie opóźnienie między kolejnymi iteracjami symulacji
-        this_thread::sleep_for(chrono::milliseconds(50)); // 50 ms opóźnienia
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+
+        // Zwalniamy pamięć macierzy
+        for (int j = 0; j < matrixSize; ++j) {
+            delete[] matrix[j];
+        }
+        delete[] matrix;
     }
 
-    cout << "\nSymulacja zakończona.\n";
+    std::cout << "\nSymulacja zakończona.\n";
 }

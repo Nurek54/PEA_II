@@ -1,10 +1,6 @@
 #ifndef TSPSIMULATION_H
 #define TSPSIMULATION_H
 
-#include <vector>
-
-using namespace std;
-
 class TSPSimulation {
 public:
     TSPSimulation(int numMatrices, int matrixSize, int maxCost);
@@ -15,7 +11,7 @@ private:
     int matrixSize;
     int maxCost;
 
-    vector<vector<int>> generateRandomMatrix();
+    int** generateRandomMatrix();
 };
 
-#endif
+#endif // TSPSIMULATION_H

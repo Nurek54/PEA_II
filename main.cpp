@@ -10,7 +10,7 @@ using namespace std;
 
 int main() {
     // Wczytaj konfigurację z pliku
-    ConfigReader config("C:\\Users\\g_sie\\OneDrive\\Pulpit\\PEA_II\\config.cfg");
+    ConfigReader config("C:\\Users\\g_sie\\OneDrive\\Pulpit\\PEA_II\\config.txt");
     if (!config.parseConfig()) {
         std::cout << "Błąd podczas parsowania pliku konfiguracyjnego." << std::endl;
         return 1;
@@ -36,16 +36,36 @@ int main() {
         }
 
         TSPInstance instance(matrixFile);
+        const int* const* distances = instance.getDistances();
+        int numCities = instance.getCityCount();
+
+        // Konwersja const int* const* na const int** (usunięcie const z pośrednich wskaźników)
+        auto mutableDistances = const_cast<const int**>(distances);
 
         if (algorithm == "BFS") {
-            BranchAndBoundBFS solver;
-            solver.solve(instance);
+            BranchAndBoundBFS solver(mutableDistances, numCities);
+            auto result = solver.solve();
+            std::cout << "Koszt: " << result.cost << ", Ścieżka: ";
+            for (int i = 0; i < result.path_length; ++i) {
+                std::cout << result.path[i] << " ";
+            }
+            std::cout << std::endl;
         } else if (algorithm == "DFS") {
-            BranchAndBoundDFS solver;
-            solver.solve(instance);
+            BranchAndBoundDFS solver(mutableDistances, numCities);
+            auto result = solver.solve();
+            std::cout << "Koszt: " << result.cost << ", Ścieżka: ";
+            for (int i = 0; i < result.path_length; ++i) {
+                std::cout << result.path[i] << " ";
+            }
+            std::cout << std::endl;
         } else if (algorithm == "BEST_FIRST") {
-            BranchAndBoundBestFirst solver;
-            solver.solve(instance);
+            BranchAndBoundBestFirst solver(mutableDistances, numCities);
+            auto result = solver.solve(instance);
+            std::cout << "Koszt: " << result.cost << ", Ścieżka: ";
+            for (int i = 0; i < result.path_length; ++i) {
+                std::cout << result.path[i] << " ";
+            }
+            std::cout << std::endl;
         } else {
             std::cout << "Nieznany algorytm: " << algorithm << std::endl;
             return 1;

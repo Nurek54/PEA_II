@@ -1,6 +1,6 @@
 #include "ConfigReader.h"
 #include <fstream>
-#include <iostream>  // Używamy std::cout zamiast cerr
+#include <iostream>
 
 ConfigReader::ConfigReader(const std::string& filename) {
     this->filename = filename;

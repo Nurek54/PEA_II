@@ -1,7 +1,7 @@
-# Plik konfiguracyjny dla projektu PEA_II
+#PEA_II
 
 # Wybór algorytmu: BFS, DFS, BEST_FIRST
-algorithm = BEST_FIRST
+algorithm = BFS
 
 # Nazwa pliku z macierzą odległości (jeśli run_simulation = false)
 distance_matrix_file = C:/Users/g_sie/OneDrive/Pulpit/PEA_II/matrix_11x11.atsp

@@ -2,23 +2,46 @@
 #define BRANCHANDBOUNDBESTFIRST_H
 
 #include "TSPInstance.h"
-#include <vector>
-#include <utility>
 
 class BranchAndBoundBestFirst {
 public:
-    std::pair<std::vector<int>, int> solve(const TSPInstance& instance);
+    BranchAndBoundBestFirst(const int** input_matrix, int num_cities);
+    ~BranchAndBoundBestFirst();
 
-private:
-    struct Node {
-        std::vector<int> path;     // Aktualna ścieżka
-        int cost;                  // Koszt dotychczasowej ścieżki
-        int lower_bound;           // Dolne ograniczenie (koszt + oszacowanie)
-        int level;                 // Poziom drzewa (liczba odwiedzonych miast)
+    struct Result {
+        int* path;
+        int path_length;
+        int cost;
+
+        Result() : path(nullptr), path_length(0), cost(0) {}
+        Result(int* p, int len, int c) : path(p), path_length(len), cost(c) {}
+        ~Result() { delete[] path; }
     };
 
-    int calculateLowerBound(const std::vector<std::vector<int>>& distances, const std::vector<int>& path);
-    void insertNode(std::vector<Node>& nodeList, const Node& node);  // Wstawia węzeł do listy zachowując sortowanie
+    Result solve(const TSPInstance& instance);
+
+private:
+    const int** distances;
+    int num_cities;
+    int* minEdge; // Minimalne krawędzie dla każdego miasta
+
+    // Struktura węzła z prealokowaną ścieżką
+    struct Node {
+        int estimated_total_cost;
+        int current_cost;
+        int current_city;
+        int path_length;
+        int* path;
+
+        Node(int num_cities);
+        ~Node();
+    };
+
+    // Funkcje pomocnicze
+    void preprocessMinEdges();
+    int calculateLowerBound(Node* node);
+    void insert(Node**& heap, int& heapSize, int& heapCapacity, Node* node);
+    Node* remove(Node**& heap, int& heapSize);
 };
 
 #endif // BRANCHANDBOUNDBESTFIRST_H

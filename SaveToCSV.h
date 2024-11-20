@@ -2,35 +2,21 @@
 #define SAVETOCSV_H
 
 #include <string>
-#include <vector>
 #include <chrono>
-
-using namespace std;
 
 class SaveToCSV {
 public:
-    SaveToCSV(const string& filename);
+    SaveToCSV(const std::string& filename);
 
-    void saveResults(const string& algorithmName,
-                     const chrono::duration<double>& seconds,
-                     const chrono::duration<double, milli>& milliseconds,
-                     const chrono::duration<double, nano>& nanoseconds,
-                     const vector<int>& path, int cost);
-
-    void updateTotals(const chrono::duration<double>& seconds,
-                      const chrono::duration<double, milli>& milliseconds,
-                      const chrono::duration<double, nano>& nanoseconds,
-                      int cost);
+    void saveResults(const std::string& algorithmName,
+                     const std::chrono::duration<double>& seconds,
+                     const std::chrono::duration<double, std::milli>& milliseconds,
+                     const std::chrono::duration<double, std::nano>& nanoseconds,
+                     const int* path, int path_length, int cost);
 
 private:
-    string filename;
+    std::string filename;
     bool isFileNew;
-
-    // Zmienne do przechowywania sum czasów i kosztów (jeśli są potrzebne)
-    double totalSeconds = 0;
-    double totalMilliseconds = 0;
-    double totalNanoseconds = 0;
-    int totalCost = 0;
 };
 
-#endif
+#endif // SAVETOCSV_H

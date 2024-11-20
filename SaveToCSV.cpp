@@ -1,14 +1,14 @@
 #include "SaveToCSV.h"
 #include <fstream>
 #include <iomanip>
-#include <iostream>
 #include <sstream>
+#include <iostream>
 
 // Konstruktor klasy SaveToCSV
-SaveToCSV::SaveToCSV(const string& filename)
+SaveToCSV::SaveToCSV(const std::string& filename)
         : filename(filename), isFileNew(false) {
     // Sprawdzenie, czy plik istnieje
-    ifstream fileCheck(filename);
+    std::ifstream fileCheck(filename);
     if (!fileCheck.good()) {
         isFileNew = true;  // Plik nie istnieje, więc jest nowy
     }
@@ -16,11 +16,11 @@ SaveToCSV::SaveToCSV(const string& filename)
 }
 
 // Własna funkcja do zamiany kropki na przecinek w stringu
-string replaceDotWithComma(double value) {
-    ostringstream ss;
-    ss << fixed << std::setprecision(6) << value;
-    string result = ss.str();
-    // Zamieniamy kropki na przecinki bez użycia std::replace
+std::string replaceDotWithComma(double value) {
+    std::ostringstream ss;
+    ss << std::fixed << std::setprecision(6) << value;
+    std::string result = ss.str();
+    // Zamieniamy kropki na przecinki
     for (size_t i = 0; i < result.length(); ++i) {
         if (result[i] == '.') {
             result[i] = ',';
@@ -30,13 +30,13 @@ string replaceDotWithComma(double value) {
 }
 
 // Funkcja do zapisu wyników dla pojedynczej iteracji
-void SaveToCSV::saveResults(const string& algorithmName,
-                            const chrono::duration<double>& seconds,
-                            const chrono::duration<double, milli>& milliseconds,
-                            const chrono::duration<double, nano>& nanoseconds,
-                            const vector<int>& path, int cost) {
+void SaveToCSV::saveResults(const std::string& algorithmName,
+                            const std::chrono::duration<double>& seconds,
+                            const std::chrono::duration<double, std::milli>& milliseconds,
+                            const std::chrono::duration<double, std::nano>& nanoseconds,
+                            const int* path, int path_length, int cost) {
 
-    ofstream csvFile(filename, ios::app);  // Otwórz plik w trybie dodawania
+    std::ofstream csvFile(filename, std::ios::app);  // Otwórz plik w trybie dodawania
     if (csvFile.is_open()) {
         // Zapisz nagłówki i nazwę algorytmu tylko raz (jeśli plik jest nowy)
         if (isFileNew) {
@@ -50,10 +50,10 @@ void SaveToCSV::saveResults(const string& algorithmName,
                 << replaceDotWithComma(milliseconds.count()) << " | "
                 << replaceDotWithComma(nanoseconds.count()) << " | ";
 
-        // Zapisujemy miasta na trasie oddzielone przecinkami ","
-        for (size_t i = 0; i < path.size(); ++i) {
+        // Zapisujemy miasta na trasie oddzielone przecinkami
+        for (int i = 0; i < path_length; ++i) {
             csvFile << path[i];
-            if (i != path.size() - 1) {
+            if (i != path_length - 1) {
                 csvFile << ",";  // Oddziela miasta przecinkami
             }
         }
@@ -62,17 +62,6 @@ void SaveToCSV::saveResults(const string& algorithmName,
         csvFile << " | " << cost << "\n";
         csvFile.close();
     } else {
-        cerr << "Nie można otworzyć pliku: " << filename << "\n";
+        std::cerr << "Nie można otworzyć pliku: " << filename << "\n";
     }
-}
-
-// Funkcja do aktualizowania sum wyników z każdej iteracji (jeśli jest używana)
-void SaveToCSV::updateTotals(const chrono::duration<double>& seconds,
-                             const chrono::duration<double, milli>& milliseconds,
-                             const chrono::duration<double, nano>& nanoseconds,
-                             int cost) {
-    totalSeconds += seconds.count();
-    totalMilliseconds += milliseconds.count();
-    totalNanoseconds += nanoseconds.count();
-    totalCost += cost;
 }
