@@ -1,6 +1,8 @@
 #ifndef BRANCHANDBOUNDBESTFIRST_H
 #define BRANCHANDBOUNDBESTFIRST_H
 
+#include <vector>
+#include <string>
 #include "TSPInstance.h"
 
 class BranchAndBoundBestFirst {
@@ -21,25 +23,26 @@ public:
     Result solve(const TSPInstance& instance);
 
 private:
-    const int** distances;
     int num_cities;
+    int** matrix;
     int* minEdge; // Minimalne krawędzie dla każdego miasta
 
-    // Struktura węzła z prealokowaną ścieżką
     struct Node {
-        int estimated_total_cost;
-        int current_cost;
-        int current_city;
-        int path_length;
         int* path;
+        int path_length;
+        int current_city;
+        int current_cost;
+        int estimated_total_cost;
 
         Node(int num_cities);
         ~Node();
     };
 
-    // Funkcje pomocnicze
     void preprocessMinEdges();
-    int calculateLowerBound(Node* node);
+    // Usunięto własną implementację calculateLowerBound
+    // Korzystamy teraz z Utilities::calculateLowerBound
+
+    // Implementacja kopca
     void insert(Node**& heap, int& heapSize, int& heapCapacity, Node* node);
     Node* remove(Node**& heap, int& heapSize);
 };

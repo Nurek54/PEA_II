@@ -1,123 +1,184 @@
-// BranchAndBoundBFS.cpp
 #include "BranchAndBoundBFS.h"
 #include "SaveToCSV.h"
-#include <climits>
+#include "TSPUtilities.h"
 #include <chrono>
+#include <climits>
 #include <iostream>
 
-BranchAndBoundBFS::BranchAndBoundBFS(const int** input_matrix, int num_cities)
-        : distances(input_matrix), num_cities(num_cities) {}
+// Konstruktor klasy BranchAndBoundBFS
+BranchAndBoundBFS::BranchAndBoundBFS(const int** input_matrix, int num_cities_input)
+        : num_cities(num_cities_input) {
+    // Alokacja macierzy kosztów
+    matrix = new int*[num_cities];
+    for (int i = 0; i < num_cities; ++i) {
+        matrix[i] = new int[num_cities];
+        for (int j = 0; j < num_cities; ++j) {
+            matrix[i][j] = input_matrix[i][j];
+        }
+    }
 
-BranchAndBoundBFS::~BranchAndBoundBFS() {
-    // Nic do zrobienia
+    // Inicjalizacja tablicy minimalnych krawędzi
+    minEdge = new int[num_cities];
+    preprocessMinEdges();
 }
 
-BranchAndBoundBFS::Result BranchAndBoundBFS::solve() {
-    // Inicjalizacja kolejki
-    std::queue<Node*> queue;
-    std::vector<Node*> all_nodes; // Przechowujemy wszystkie węzły, aby je później usunąć
-
-    // Węzeł początkowy
-    bool* initial_visited = new bool[num_cities]();
-    initial_visited[0] = true;
-    Node* root = new Node(0, 0, 0, initial_visited, nullptr);
-
-    queue.push(root);
-    all_nodes.push_back(root);
-
-    int min_cost = INT_MAX;
-    Node* best_node = nullptr;
-
-    auto start_time = std::chrono::high_resolution_clock::now();
-
-    while (!queue.empty()) {
-        Node* current = queue.front();
-        queue.pop();
-
-        if (current->cost >= min_cost) {
-            continue; // Nie usuwamy current tutaj
-        }
-
-        if (current->level == num_cities - 1) {
-            int return_cost = distances[current->city][0];
-
-            if (return_cost != -1) {
-                int total_cost = current->cost + return_cost;
-
-                if (total_cost < min_cost) {
-                    min_cost = total_cost;
-                    best_node = current;
-                }
-            }
-            continue; // Nie usuwamy current tutaj
-        }
-
-        for (int i = 0; i < num_cities; ++i) {
-            if (!current->visited[i] && distances[current->city][i] != -1) {
-                int edge_cost = distances[current->city][i];
-                int new_cost = current->cost + edge_cost;
-
-                if (new_cost >= min_cost) {
-                    continue;
-                }
-
-                // Tworzymy nową tablicę visited dla dziecka
-                bool* child_visited = new bool[num_cities];
-                for (int j = 0; j < num_cities; ++j) {
-                    child_visited[j] = current->visited[j];
-                }
-                child_visited[i] = true;
-
-                Node* child = new Node(i, new_cost, current->level + 1, child_visited, current);
-                queue.push(child);
-                all_nodes.push_back(child);
-            }
-        }
+// Destruktor klasy BranchAndBoundBFS
+BranchAndBoundBFS::~BranchAndBoundBFS() {
+    for (int i = 0; i < num_cities; ++i) {
+        delete[] matrix[i];
     }
+    delete[] matrix;
+    delete[] minEdge;
+}
 
-    // Odtwarzamy ścieżkę z best_node
+// Funkcja preprocessMinEdges - oblicza minimalne krawędzie dla każdego miasta
+void BranchAndBoundBFS::preprocessMinEdges() {
+    for (int i = 0; i < num_cities; ++i) {
+        int min_value = INT_MAX;
+        for (int j = 0; j < num_cities; ++j) {
+            if (i != j && matrix[i][j] != -1 && matrix[i][j] < min_value) {
+                min_value = matrix[i][j];
+            }
+        }
+        minEdge[i] = (min_value != INT_MAX) ? min_value : 0;
+    }
+}
+
+// Funkcja solve - główna implementacja algorytmu BFS
+BranchAndBoundBFS::Result BranchAndBoundBFS::solve() {
+    // Inicjalizacja własnej kolejki
+    Queue q;
+
+    // Tworzenie węzła początkowego
+    int* root_path = new int[1];
+    root_path[0] = 0; // Startujemy z miasta 0
+
+    // Obliczanie dolnej granicy dla węzła początkowego
+    int root_bound = Utilities::calculateLowerBound(root_path, 1, matrix, minEdge, num_cities);
+
+    // Dodanie węzła początkowego do kolejki
+    q.enqueue({root_path, 1, 0, root_bound});
+
+    // Inicjalizacja zmiennych do przechowywania najlepszej ścieżki
+    int min_cost = INT_MAX;
     int* best_path = nullptr;
     int best_path_length = 0;
-    if (best_node != nullptr) {
-        reconstructPath(best_node, best_path, best_path_length);
-        // Dodajemy miasto początkowe na końcu ścieżki
-        int* complete_path = new int[best_path_length + 1];
-        for (int i = 0; i < best_path_length; ++i) {
-            complete_path[best_path_length - i - 1] = best_path[i];
+
+    // Zapisujemy czas rozpoczęcia algorytmu
+    auto start_time = std::chrono::high_resolution_clock::now();
+
+    // Główna pętla algorytmu BFS
+    while (!q.empty()) {
+        // Pobieramy węzeł z kolejki
+        Queue::QueueNode current = q.dequeue();
+
+        // Obsługa pustego węzła (jeśli kolejka była pusta)
+        if (current.path == nullptr && current.path_length == 0 && current.cost == 0 && current.bound == 0) {
+            continue;
         }
-        complete_path[best_path_length] = 0;
-        delete[] best_path;
-        best_path = complete_path;
-        best_path_length += 1;
+
+        int* current_path = current.path;
+        int current_path_length = current.path_length;
+        int current_cost = current.cost;
+        int current_bound = current.bound;
+
+        // Przycinanie gałęzi
+        if (current_bound >= min_cost) {
+            delete[] current_path;
+            continue;
+        }
+
+        // Sprawdzamy, czy odwiedziliśmy wszystkie miasta
+        if (current_path_length == num_cities) {
+            // Dodajemy powrót do miasta startowego, aby zamknąć cykl
+            int* complete_path = new int[current_path_length + 1];
+            for (int i = 0; i < current_path_length; ++i) {
+                complete_path[i] = current_path[i];
+            }
+            complete_path[current_path_length] = current_path[0];
+
+            // Obliczamy całkowity koszt ścieżki
+            int total_cost = Utilities::calculate_cost(complete_path, current_path_length + 1, matrix, true);
+
+            if (total_cost < min_cost) {
+                min_cost = total_cost;
+                delete[] best_path;
+                best_path_length = current_path_length + 1;
+                best_path = complete_path;
+            } else {
+                delete[] complete_path;
+            }
+
+            delete[] current_path;
+            continue;
+        }
+
+        // Generowanie dzieci węzła
+        for (int i = 0; i < num_cities; ++i) {
+            // Sprawdzamy, czy miasto i jest już w ścieżce i czy istnieje połączenie
+            if (!Utilities::isCityInPath(current_path, current_path_length, i) &&
+                matrix[current_path[current_path_length - 1]][i] != -1) {
+
+                // Tworzymy nową ścieżkę dla dziecka
+                int* child_path = new int[current_path_length + 1];
+                for (int j = 0; j < current_path_length; ++j) {
+                    child_path[j] = current_path[j];
+                }
+                child_path[current_path_length] = i;
+
+                // Obliczamy nowy koszt ścieżki
+                int temp_cost = current_cost + matrix[current_path[current_path_length - 1]][i];
+
+                // Obliczamy nową dolną granicę dla dziecka
+                int child_bound = Utilities::calculateLowerBound(child_path, current_path_length + 1, matrix, minEdge, num_cities);
+
+                // Przycinamy gałęzie, jeśli dolna granica jest mniejsza niż obecny minimalny koszt
+                if (child_bound < min_cost) {
+                    q.enqueue({child_path, current_path_length + 1, temp_cost, child_bound});
+                } else {
+                    delete[] child_path;
+                }
+            }
+        }
+
+        // Usuwamy bieżącą ścieżkę, aby uniknąć wycieków pamięci
+        delete[] current_path;
     }
 
+    // Zapisujemy czas zakończenia algorytmu
     auto end_time = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> seconds = end_time - start_time;
     std::chrono::duration<double, std::milli> milliseconds = end_time - start_time;
     std::chrono::duration<double, std::nano> nanoseconds = end_time - start_time;
 
+    // Dodajemy koszt powrotu do miasta początkowego dla najlepszej ścieżki (jeśli istnieje)
+    if (best_path != nullptr) {
+        // Sprawdzamy, czy ostatnie miasto nie jest już miastem początkowym
+        if (best_path_length > 0 && best_path[best_path_length - 1] != best_path[0]) {
+            int* complete_path = new int[best_path_length + 1];
+            for (int i = 0; i < best_path_length; ++i) {
+                complete_path[i] = best_path[i];
+            }
+            complete_path[best_path_length] = best_path[0];
+            delete[] best_path;
+            best_path = complete_path;
+            best_path_length += 1;
+        }
+
+        // Aktualizacja minimalnego kosztu z powrotem do miasta startowego
+        int final_cost = Utilities::calculate_cost(best_path, best_path_length, matrix, true);
+        min_cost = final_cost;
+    }
+
     // Zapisujemy wyniki do pliku CSV
     SaveToCSV save("BranchAndBoundBFSResults.csv");
     save.saveResults("BranchAndBoundBFS", seconds, milliseconds, nanoseconds, best_path, best_path_length, min_cost);
 
-    // Usuwamy wszystkie węzły
-    for (Node* node : all_nodes) {
-        delete node;
-    }
-    all_nodes.clear();
+    // Przygotowujemy wynik do zwrócenia
+    Result result;
+    result.path = best_path;
+    result.path_length = best_path_length;
+    result.cost = min_cost;
 
-    // Zwracamy najlepszą ścieżkę i jej koszt
-    return Result(best_path, best_path_length, min_cost);
-}
-
-void BranchAndBoundBFS::reconstructPath(Node* node, int*& path, int& path_length) {
-    // Obliczamy długość ścieżki
-    path_length = node->level + 1;
-    path = new int[path_length];
-    Node* current = node;
-    int index = 0;
-    while (current != nullptr) {
-        path[index++] = current->city;
-        current = current->parent;
-    }
+    return result;
 }
