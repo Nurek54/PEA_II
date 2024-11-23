@@ -20,4 +20,10 @@ add_executable(PEA_I main.cpp
         BranchAndBoundBestFirst.cpp
         BranchAndBoundBestFirst.h
         ConfigReader.cpp
-        ConfigReader.h)
+        ConfigReader.h
+        BranchAndBoundBestFirstSymmetric.cpp
+        BranchAndBoundBestFirstSymmetric.h
+        BranchAndBoundBFSSymmetric.cpp
+        BranchAndBoundBFSSymmetric.h
+        BranchAndBoundDFSSymmetric.cpp
+        BranchAndBoundDFSSymmetric.h)

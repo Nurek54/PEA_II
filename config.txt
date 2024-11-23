@@ -7,9 +7,9 @@ algorithms = BFS, DFS, BEST_FIRST
 distance_matrix_file = C:/Users/g_sie/OneDrive/Pulpit/PEA_II/matrix_11x11.atsp
 
 # Czy uruchomić symulację (true/false)
-run_simulation = false
+run_simulation = true
 
 # Parametry symulacji (używane tylko jeśli run_simulation = true)
-num_matrices = 10
-matrix_size = 6
+num_matrices = 1
+matrix_size = 10
 max_cost = 100
