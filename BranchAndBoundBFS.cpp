@@ -45,7 +45,7 @@ void BranchAndBoundBFS::preprocessMinEdges() {
 }
 
 // Funkcja solve - główna implementacja algorytmu BFS
-BranchAndBoundBFS::Result BranchAndBoundBFS::solve() {
+BranchAndBoundBFS::Result BranchAndBoundBFS::solve(const std::string& matrixType) {
     // Inicjalizacja własnej kolejki
     Queue q;
 
@@ -172,7 +172,7 @@ BranchAndBoundBFS::Result BranchAndBoundBFS::solve() {
 
     // Zapisujemy wyniki do pliku CSV
     SaveToCSV save("BranchAndBoundBFSResults.csv");
-    save.saveResults("BranchAndBoundBFS", seconds, milliseconds, nanoseconds, best_path, best_path_length, min_cost);
+    save.saveResults("BranchAndBoundBFS", matrixType, seconds, milliseconds, nanoseconds, best_path, best_path_length, min_cost);
 
     // Przygotowujemy wynik do zwrócenia
     Result result;

@@ -203,3 +203,13 @@ int ConfigReader::getMaxCost() const {
         return 0;
     }
 }
+
+std::string ConfigReader::getMatrixType() const {
+    const char* value = getValue("matrix_type");
+    if (value != nullptr) {
+        return std::string(value);
+    } else {
+        return "random"; // Domyślny typ macierzy
+    }
+}
+

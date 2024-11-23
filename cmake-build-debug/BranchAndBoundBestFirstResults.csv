@@ -1,0 +1,4 @@
+Algorithm | MatrixType | Seconds | Milliseconds | Nanoseconds | Path | Cost
+BranchAndBoundBestFirst | random | 0,000120 | 0,119600 | 119600,000000 | 0,5,3,1,2,4,0,0 | 150
+BranchAndBoundBestFirst | random | 0,000596 | 0,596100 | 596100,000000 | 0,6,4,7,3,5,1,2,0,0 | 136
+BranchAndBoundBestFirst | random | 0,050490 | 50,490400 | 50490400,000000 | 0,4,3,9,8,10,1,2,7,5,6,0,0 | 149

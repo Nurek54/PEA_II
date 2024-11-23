@@ -25,7 +25,7 @@ public:
     ~BranchAndBoundBFS();
 
     // Główna funkcja rozwiązująca problem
-    Result solve();
+    Result solve(const std::string& matrixType);
 
 private:
     int num_cities;    // Liczba miast

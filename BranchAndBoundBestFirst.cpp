@@ -118,7 +118,7 @@ BranchAndBoundBestFirst::Node* BranchAndBoundBestFirst::remove(Node**& heap, int
 }
 
 // Główna funkcja solve
-BranchAndBoundBestFirst::Result BranchAndBoundBestFirst::solve(const TSPInstance& instance) {
+BranchAndBoundBestFirst::Result BranchAndBoundBestFirst::solve(const TSPInstance& instance, const std::string& matrixType) {
     int best_cost = INT_MAX;
     int* best_path = nullptr;
     int best_path_length = 0;
@@ -229,7 +229,7 @@ BranchAndBoundBestFirst::Result BranchAndBoundBestFirst::solve(const TSPInstance
 
     // Zapisywanie wyników do pliku CSV
     SaveToCSV save("BranchAndBoundBestFirstResults.csv");
-    save.saveResults("BranchAndBoundBestFirst", seconds, milliseconds, nanoseconds, best_path, best_path_length, best_cost);
+    save.saveResults("BranchAndBoundBestFirst", matrixType, seconds, milliseconds, nanoseconds, best_path, best_path_length, best_cost);
 
     // Czyszczenie pamięci
     for (int i = 0; i < heapSize; ++i) {

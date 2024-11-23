@@ -1,7 +1,6 @@
 #ifndef BRANCHANDBOUNDBESTFIRST_H
 #define BRANCHANDBOUNDBESTFIRST_H
 
-#include <vector>
 #include <string>
 #include "TSPInstance.h"
 
@@ -20,7 +19,7 @@ public:
         ~Result() { delete[] path; }
     };
 
-    Result solve(const TSPInstance& instance);
+    Result solve(const TSPInstance& instance, const std::string& matrixType);
 
 private:
     int num_cities;
@@ -39,8 +38,6 @@ private:
     };
 
     void preprocessMinEdges();
-    // Usunięto własną implementację calculateLowerBound
-    // Korzystamy teraz z Utilities::calculateLowerBound
 
     // Implementacja kopca
     void insert(Node**& heap, int& heapSize, int& heapCapacity, Node* node);

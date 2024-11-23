@@ -37,7 +37,7 @@ void BranchAndBoundDFS::preprocessMinEdges() {
     }
 }
 
-BranchAndBoundDFS::Result BranchAndBoundDFS::solve() {
+BranchAndBoundDFS::Result BranchAndBoundDFS::solve(const std::string& matrixType) {
     struct StackNode {
         int* path;
         int path_length;
@@ -157,7 +157,7 @@ BranchAndBoundDFS::Result BranchAndBoundDFS::solve() {
     std::chrono::duration<double, std::nano> nanoseconds = end_time - start_time;
 
     SaveToCSV save("BranchAndBoundDFSResults.csv");
-    save.saveResults("BranchAndBoundDFS", seconds, milliseconds, nanoseconds, best_path, best_path_length, min_cost);
+    save.saveResults("BranchAndBoundDFS", matrixType, seconds, milliseconds, nanoseconds, best_path, best_path_length, min_cost);
 
     Result result;
     result.path = best_path;

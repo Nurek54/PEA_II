@@ -25,6 +25,7 @@ int main() {
     }
 
     bool runSimulation = config.getRunSimulation();
+    std::string matrixType = config.getMatrixType(); // Pobierz typ macierzy (random/symmetric)
 
     if (runSimulation) {
         // Uruchom symulację
@@ -32,7 +33,7 @@ int main() {
         int matrixSize = config.getMatrixSize();
         int maxCost = config.getMaxCost();
 
-        TSPSimulation simulation(numMatrices, matrixSize, maxCost, algorithms, algorithmCount);
+        TSPSimulation simulation(numMatrices, matrixSize, maxCost, algorithms, algorithmCount, matrixType);
         simulation.runSimulation();
     } else {
         // Wczytaj macierz odległości
@@ -57,15 +58,15 @@ int main() {
 
             if (algorithm == "BFS") {
                 BranchAndBoundBFS solver(distances, numCities);
-                auto result = solver.solve();
+                auto result = solver.solve(matrixType);
                 // Wynik zapisany do CSV, nie drukujemy
             } else if (algorithm == "DFS") {
                 BranchAndBoundDFS solver(distances, numCities);
-                auto result = solver.solve();
+                auto result = solver.solve(matrixType);
                 // Wynik zapisany do CSV, nie drukujemy
             } else if (algorithm == "BEST_FIRST") {
                 BranchAndBoundBestFirst solver(distances, numCities);
-                auto result = solver.solve(instance);
+                auto result = solver.solve(instance, matrixType);
                 // Wynik zapisany do CSV, nie drukujemy
             } else {
                 std::cout << "Nieznany algorytm: " << algorithm << std::endl;

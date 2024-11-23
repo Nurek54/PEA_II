@@ -1,6 +1,8 @@
 #ifndef BRANCHANDBOUNDDFS_H
 #define BRANCHANDBOUNDDFS_H
 
+#include <string>
+
 class BranchAndBoundDFS {
 public:
     BranchAndBoundDFS(const int* const* input_matrix, int num_cities_input);
@@ -16,7 +18,7 @@ public:
         ~Result() { delete[] path; }
     };
 
-    Result solve();
+    Result solve(const std::string& matrixType);
 
 private:
     int num_cities;

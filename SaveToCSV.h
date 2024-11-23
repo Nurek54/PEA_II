@@ -9,6 +9,7 @@ public:
     SaveToCSV(const std::string& filename);
 
     void saveResults(const std::string& algorithmName,
+                     const std::string& matrixType,  // Dodane
                      const std::chrono::duration<double>& seconds,
                      const std::chrono::duration<double, std::milli>& milliseconds,
                      const std::chrono::duration<double, std::nano>& nanoseconds,
