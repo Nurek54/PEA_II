@@ -5,8 +5,8 @@
 #include <climits>
 #include <iostream>
 
-BranchAndBoundDFS::BranchAndBoundDFS(const int** input_matrix, int num_cities_input) : num_cities(num_cities_input) {
-    matrix = new int*[num_cities];
+BranchAndBoundDFS::BranchAndBoundDFS(const int* const* input_matrix, int num_cities_input)
+        : num_cities(num_cities_input) {    matrix = new int*[num_cities];
     for (int i = 0; i < num_cities; ++i) {
         matrix[i] = new int[num_cities];
         for (int j = 0; j < num_cities; ++j) {

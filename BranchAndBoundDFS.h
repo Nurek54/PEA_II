@@ -3,7 +3,7 @@
 
 class BranchAndBoundDFS {
 public:
-    BranchAndBoundDFS(const int** input_matrix, int num_cities);
+    BranchAndBoundDFS(const int* const* input_matrix, int num_cities_input);
     ~BranchAndBoundDFS();
 
     struct Result {

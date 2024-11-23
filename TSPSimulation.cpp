@@ -7,9 +7,13 @@
 #include <cstdlib>
 #include <ctime>
 
-TSPSimulation::TSPSimulation(int numMatrices, int matrixSize, int maxCost, const std::vector<std::string>& algorithms)
-        : numMatrices(numMatrices), matrixSize(matrixSize), maxCost(maxCost), algorithms(algorithms) {
+TSPSimulation::TSPSimulation(int numMatrices, int matrixSize, int maxCost, char** algorithms, int algorithmCount)
+        : numMatrices(numMatrices), matrixSize(matrixSize), maxCost(maxCost), algorithms(algorithms), algorithmCount(algorithmCount) {
     std::srand(static_cast<unsigned int>(std::time(nullptr))); // Inicjalizacja generatora liczb pseudolosowych
+}
+
+TSPSimulation::~TSPSimulation() {
+    // Zakładam, że pamięć dla algorithms jest zarządzana poza klasą
 }
 
 void TSPSimulation::runSimulation() {
@@ -25,31 +29,25 @@ void TSPSimulation::runSimulation() {
         TSPInstance instance(matrix, matrixSize);
         const int* const* distances = instance.getDistances();
 
-        // Konwersja const int* const* na const int** (usunięcie const z pośrednich wskaźników)
-        auto mutableDistances = const_cast<const int**>(distances);
-
         // Iterujemy po wybranych algorytmach
-        for (const auto& algorithm : algorithms) {
-            std::cout << "Symulacja " << m + 1 << "/" << numMatrices << ", Algorytm: " << algorithm << std::endl;
+        for (int i = 0; i < algorithmCount; ++i) {
+            std::string algorithm(algorithms[i]);
 
             if (algorithm == "BFS") {
-                BranchAndBoundBFS solver(mutableDistances, matrixSize);
+                BranchAndBoundBFS solver(distances, matrixSize);
                 auto result = solver.solve();
-                // Możesz zapisać wyniki lub wyświetlić je tutaj
+                // Wynik zapisany do CSV, nie drukujemy
             } else if (algorithm == "DFS") {
-                BranchAndBoundDFS solver(mutableDistances, matrixSize);
+                BranchAndBoundDFS solver(distances, matrixSize);
                 auto result = solver.solve();
-                // Możesz zapisać wyniki lub wyświetlić je tutaj
+                // Wynik zapisany do CSV, nie drukujemy
             } else if (algorithm == "BEST_FIRST") {
-                BranchAndBoundBestFirst solver(mutableDistances, matrixSize);
+                BranchAndBoundBestFirst solver(distances, matrixSize);
                 auto result = solver.solve(instance);
-                // Możesz zapisać wyniki lub wyświetlić je tutaj
+                // Wynik zapisany do CSV, nie drukujemy
             } else {
-                std::cout << "Nieznany algorytm: " << algorithm << std::endl;
-                // Możesz zdecydować, czy kontynuować, czy przerwać w tym miejscu
+                // Nieznany algorytm, możemy pominąć lub logować
             }
-
-            std::cout << "----------------------------------------" << std::endl;
         }
 
         // Zwalniamy pamięć

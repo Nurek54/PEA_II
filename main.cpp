@@ -16,7 +16,14 @@ int main() {
         return 1;
     }
 
-    std::vector<std::string> algorithms = config.getAlgorithms();
+    // Pobierz algorytmy
+    int algorithmCount = 0;
+    char** algorithms = config.getAlgorithms(algorithmCount);
+    if (algorithms == nullptr || algorithmCount == 0) {
+        std::cout << "Nie podano algorytmów w konfiguracji." << std::endl;
+        return 1;
+    }
+
     bool runSimulation = config.getRunSimulation();
 
     if (runSimulation) {
@@ -25,13 +32,18 @@ int main() {
         int matrixSize = config.getMatrixSize();
         int maxCost = config.getMaxCost();
 
-        TSPSimulation simulation(numMatrices, matrixSize, maxCost, algorithms);
+        TSPSimulation simulation(numMatrices, matrixSize, maxCost, algorithms, algorithmCount);
         simulation.runSimulation();
     } else {
         // Wczytaj macierz odległości
         string matrixFile = config.getDistanceMatrixFile();
         if (matrixFile.empty()) {
             std::cout << "Nie podano pliku z macierzą odległości w konfiguracji." << std::endl;
+            // Zwolnij pamięć algorytmów przed zakończeniem
+            for (int i = 0; i < algorithmCount; ++i) {
+                delete[] algorithms[i];
+            }
+            delete[] algorithms;
             return 1;
         }
 
@@ -39,45 +51,34 @@ int main() {
         const int* const* distances = instance.getDistances();
         int numCities = instance.getCityCount();
 
-        // Konwersja const int* const* na const int** (usunięcie const z pośrednich wskaźników)
-        auto mutableDistances = const_cast<const int**>(distances);
-
         // Iterujemy po wybranych algorytmach
-        for (const auto& algorithm : algorithms) {
-            std::cout << "Uruchamiam algorytm: " << algorithm << std::endl;
+        for (int i = 0; i < algorithmCount; ++i) {
+            std::string algorithm(algorithms[i]);
 
             if (algorithm == "BFS") {
-                BranchAndBoundBFS solver(mutableDistances, numCities);
+                BranchAndBoundBFS solver(distances, numCities);
                 auto result = solver.solve();
-                std::cout << "Koszt: " << result.cost << ", Ścieżka: ";
-                for (int i = 0; i < result.path_length; ++i) {
-                    std::cout << result.path[i] << " ";
-                }
-                std::cout << std::endl;
+                // Wynik zapisany do CSV, nie drukujemy
             } else if (algorithm == "DFS") {
-                BranchAndBoundDFS solver(mutableDistances, numCities);
+                BranchAndBoundDFS solver(distances, numCities);
                 auto result = solver.solve();
-                std::cout << "Koszt: " << result.cost << ", Ścieżka: ";
-                for (int i = 0; i < result.path_length; ++i) {
-                    std::cout << result.path[i] << " ";
-                }
-                std::cout << std::endl;
+                // Wynik zapisany do CSV, nie drukujemy
             } else if (algorithm == "BEST_FIRST") {
-                BranchAndBoundBestFirst solver(mutableDistances, numCities);
+                BranchAndBoundBestFirst solver(distances, numCities);
                 auto result = solver.solve(instance);
-                std::cout << "Koszt: " << result.cost << ", Ścieżka: ";
-                for (int i = 0; i < result.path_length; ++i) {
-                    std::cout << result.path[i] << " ";
-                }
-                std::cout << std::endl;
+                // Wynik zapisany do CSV, nie drukujemy
             } else {
                 std::cout << "Nieznany algorytm: " << algorithm << std::endl;
                 // Możesz zdecydować, czy kontynuować, czy przerwać w tym miejscu
             }
-
-            std::cout << "----------------------------------------" << std::endl;
         }
     }
+
+    // Zwolnij pamięć alokowaną dla algorytmów
+    for (int i = 0; i < algorithmCount; ++i) {
+        delete[] algorithms[i];
+    }
+    delete[] algorithms;
 
     return 0;
 }

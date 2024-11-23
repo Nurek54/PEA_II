@@ -20,7 +20,7 @@ BranchAndBoundBestFirst::Node::~Node() {
 }
 
 // Konstruktor klasy BranchAndBoundBestFirst
-BranchAndBoundBestFirst::BranchAndBoundBestFirst(const int** input_matrix, int num_cities_input)
+BranchAndBoundBestFirst::BranchAndBoundBestFirst(const int* const* input_matrix, int num_cities_input)
         : num_cities(num_cities_input) {
     // Alokujemy dynamicznie macierz odległości
     matrix = new int*[num_cities];

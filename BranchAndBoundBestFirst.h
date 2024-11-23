@@ -7,7 +7,7 @@
 
 class BranchAndBoundBestFirst {
 public:
-    BranchAndBoundBestFirst(const int** input_matrix, int num_cities);
+    BranchAndBoundBestFirst(const int* const* input_matrix, int num_cities);
     ~BranchAndBoundBestFirst();
 
     struct Result {

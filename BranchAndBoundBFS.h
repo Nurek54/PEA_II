@@ -21,7 +21,7 @@ public:
     };
 
     // Konstruktor i destruktor
-    BranchAndBoundBFS(const int** input_matrix, int num_cities_input);
+    BranchAndBoundBFS(const int* const* input_matrix, int num_cities_input);
     ~BranchAndBoundBFS();
 
     // Główna funkcja rozwiązująca problem

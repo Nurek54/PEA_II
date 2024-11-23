@@ -6,7 +6,7 @@
 #include <iostream>
 
 // Konstruktor klasy BranchAndBoundBFS
-BranchAndBoundBFS::BranchAndBoundBFS(const int** input_matrix, int num_cities_input)
+BranchAndBoundBFS::BranchAndBoundBFS(const int* const* input_matrix, int num_cities_input)
         : num_cities(num_cities_input) {
     // Alokacja macierzy kosztów
     matrix = new int*[num_cities];
