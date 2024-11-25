@@ -4,19 +4,21 @@
 #include <sstream>
 #include <iostream>
 
-SaveToCSV::SaveToCSV(const std::string& filename)
+using namespace std;
+
+SaveToCSV::SaveToCSV(const string& filename)
         : filename(filename), isFileNew(false) {
-    std::ifstream fileCheck(filename);
+    ifstream fileCheck(filename);
     if (!fileCheck.good()) {
         isFileNew = true;
     }
     fileCheck.close();
 }
 
-std::string replaceDotWithComma(double value) {
-    std::ostringstream ss;
-    ss << std::fixed << std::setprecision(6) << value;
-    std::string result = ss.str();
+string replaceDotWithComma(double value) {
+    ostringstream ss;
+    ss << fixed << setprecision(6) << value;
+    string result = ss.str();
     for (size_t i = 0; i < result.length(); ++i) {
         if (result[i] == '.') {
             result[i] = ',';
@@ -25,14 +27,14 @@ std::string replaceDotWithComma(double value) {
     return result;
 }
 
-void SaveToCSV::saveResults(const std::string& algorithmName,
-                            const std::string& matrixType,  // Dodane
-                            const std::chrono::duration<double>& seconds,
-                            const std::chrono::duration<double, std::milli>& milliseconds,
-                            const std::chrono::duration<double, std::nano>& nanoseconds,
+void SaveToCSV::saveResults(const string& algorithmName,
+                            const string& matrixType,  // Dodane
+                            const chrono::duration<double>& seconds,
+                            const chrono::duration<double, milli>& milliseconds,
+                            const chrono::duration<double, nano>& nanoseconds,
                             const int* path, int path_length, int cost) {
 
-    std::ofstream csvFile(filename, std::ios::app);
+    ofstream csvFile(filename, ios::app);
     if (csvFile.is_open()) {
         if (isFileNew) {
             csvFile << "Algorithm | MatrixType | Seconds | Milliseconds | Nanoseconds | Path | Cost\n";
@@ -55,6 +57,6 @@ void SaveToCSV::saveResults(const std::string& algorithmName,
         csvFile << " | " << cost << "\n";
         csvFile.close();
     } else {
-        std::cerr << "Nie można otworzyć pliku: " << filename << "\n";
+        cout << "Nie można otworzyć pliku: " << filename << "\n";
     }
 }

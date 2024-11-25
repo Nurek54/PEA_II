@@ -10,7 +10,7 @@ distance_matrix_file = C:/Users/g_sie/OneDrive/Pulpit/PEA_II/matrix_11x11.atsp
 run_simulation = false
 
 # Parametry symulacji (używane tylko jeśli run_simulation = true)
-num_matrices = 10
+num_matrices = 1000
 matrix_size = 8
 max_cost = 100
 # Opcje: symmetric lub random

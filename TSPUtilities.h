@@ -3,6 +3,8 @@
 
 #include <string>
 
+using namespace std;
+
 class Utilities {
 public:
     static int calculate_cost(const int* path, int path_length, const int* const* distances, bool include_return = true);

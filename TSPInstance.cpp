@@ -3,7 +3,9 @@
 #include <stdexcept>
 #include <iostream>
 
-TSPInstance::TSPInstance(const std::string& filename) {
+using namespace std;
+
+TSPInstance::TSPInstance(const string& filename) {
     loadFromFile(filename);
 }
 
@@ -25,17 +27,17 @@ TSPInstance::~TSPInstance() {
     delete[] costMatrix;
 }
 
-void TSPInstance::loadFromFile(const std::string& filename) {
-    std::ifstream file(filename);
+void TSPInstance::loadFromFile(const string& filename) {
+    ifstream file(filename);
     if (!file.is_open()) {
-        throw std::runtime_error("Nie można otworzyc pliku: " + filename);
+        throw runtime_error("Nie można otworzyc pliku: " + filename);
     }
 
     file >> cityCount;
     if (file.fail()) {
-        throw std::runtime_error("Blad podczas odczytu liczby miast.");
+        throw runtime_error("Blad podczas odczytu liczby miast.");
     }
-    std::cout << "Liczba miast w pliku: " << cityCount << std::endl;
+    //cout << "Liczba miast w pliku: " << cityCount << endl;
 
     costMatrix = new int*[cityCount];
     for (int i = 0; i < cityCount; ++i) {
@@ -46,19 +48,19 @@ void TSPInstance::loadFromFile(const std::string& filename) {
         for (int j = 0; j < cityCount; ++j) {
             file >> costMatrix[i][j];
             if (file.fail()) {
-                throw std::runtime_error("Blad podczas odczytu macierzy kosztow.");
+                throw runtime_error("Blad podczas odczytu macierzy kosztow.");
             }
         }
     }
 
     // Opcjonalnie wyświetl macierz
-    std::cout << "Macierz kosztow:" << std::endl;
+    /*cout << "Macierz kosztow:" << endl;
     for (int i = 0; i < cityCount; ++i) {
         for (int j = 0; j < cityCount; ++j) {
-            std::cout << costMatrix[i][j] << " ";
+            cout << costMatrix[i][j] << " ";
         }
-        std::cout << std::endl;
-    }
+        cout << endl;
+    }*/
 }
 
 const int* const* TSPInstance::getDistances() const {

@@ -4,6 +4,8 @@
 #include <string>
 #include "TSPInstance.h"
 
+using namespace std;
+
 class BranchAndBoundBestFirst {
 public:
     BranchAndBoundBestFirst(const int* const* input_matrix, int num_cities);
@@ -19,7 +21,7 @@ public:
         ~Result() { delete[] path; }
     };
 
-    Result solve(const TSPInstance& instance, const std::string& matrixType);
+    Result solve(const TSPInstance& instance, const string& matrixType);
 
 private:
     int num_cities;

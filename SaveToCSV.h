@@ -4,19 +4,21 @@
 #include <string>
 #include <chrono>
 
+using namespace std;
+
 class SaveToCSV {
 public:
-    SaveToCSV(const std::string& filename);
+    SaveToCSV(const string& filename);
 
-    void saveResults(const std::string& algorithmName,
-                     const std::string& matrixType,  // Dodane
-                     const std::chrono::duration<double>& seconds,
-                     const std::chrono::duration<double, std::milli>& milliseconds,
-                     const std::chrono::duration<double, std::nano>& nanoseconds,
+    void saveResults(const string& algorithmName,
+                     const string& matrixType,  // Dodane
+                     const chrono::duration<double>& seconds,
+                     const chrono::duration<double, milli>& milliseconds,
+                     const chrono::duration<double, nano>& nanoseconds,
                      const int* path, int path_length, int cost);
 
 private:
-    std::string filename;
+    string filename;
     bool isFileNew;
 };
 

@@ -7,9 +7,11 @@
 #include <cstdlib>
 #include <ctime>
 
-TSPSimulation::TSPSimulation(int numMatrices, int matrixSize, int maxCost, char** algorithms, int algorithmCount, const std::string& matrixType)
+using namespace std;
+
+TSPSimulation::TSPSimulation(int numMatrices, int matrixSize, int maxCost, char** algorithms, int algorithmCount, const string& matrixType)
         : numMatrices(numMatrices), matrixSize(matrixSize), maxCost(maxCost), algorithms(algorithms), algorithmCount(algorithmCount), matrixType(matrixType) {
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    srand(static_cast<unsigned int>(time(nullptr)));
 }
 
 TSPSimulation::~TSPSimulation() {
@@ -36,7 +38,7 @@ void TSPSimulation::runSimulation() {
 
         // Iterujemy po wybranych algorytmach
         for (int i = 0; i < algorithmCount; ++i) {
-            std::string algorithm(algorithms[i]);
+            string algorithm(algorithms[i]);
 
             if (algorithm == "BFS") {
                 BranchAndBoundBFS solver(distances, matrixSize);
@@ -51,7 +53,7 @@ void TSPSimulation::runSimulation() {
                 auto result = solver.solve(instance, matrixType);
                 // Wynik zapisany do CSV, nie drukujemy
             } else {
-                std::cout << "Nieznany algorytm: " << algorithm << std::endl;
+                cout << "Nieznany algorytm: " << algorithm << endl;
                 // Możemy pominąć lub logować
             }
         }
@@ -70,7 +72,7 @@ void TSPSimulation::generateRandomMatrix(int** matrix) {
             if (i == j) {
                 matrix[i][j] = -1; // Brak połączenia do samego siebie
             } else {
-                matrix[i][j] = std::rand() % maxCost + 1; // Losowa wartość od 1 do maxCost
+                matrix[i][j] = rand() % maxCost + 1; // Losowa wartość od 1 do maxCost
             }
         }
     }
@@ -82,7 +84,7 @@ void TSPSimulation::generateSymmetricMatrix(int** matrix) {
             if (i == j) {
                 matrix[i][j] = -1; // Brak połączenia do samego siebie
             } else {
-                int cost = std::rand() % maxCost + 1; // Losowa wartość od 1 do maxCost
+                int cost = rand() % maxCost + 1; // Losowa wartość od 1 do maxCost
                 matrix[i][j] = cost;
                 matrix[j][i] = cost; // Symetryczność
             }

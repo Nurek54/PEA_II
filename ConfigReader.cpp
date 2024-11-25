@@ -2,10 +2,12 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <cstring> // dla strcpy, strdup
+#include <cstring>
+
+using namespace std;
 
 // Konstruktor
-ConfigReader::ConfigReader(const std::string& filename)
+ConfigReader::ConfigReader(const string& filename)
         : filename(filename), configEntries(nullptr), numEntries(0), capacityEntries(10) {
     // Inicjalizacja tablicy configEntries z początkową pojemnością
     configEntries = new ConfigEntry[capacityEntries];
@@ -23,7 +25,7 @@ ConfigReader::~ConfigReader() {
 }
 
 // Funkcja do usuwania białych znaków z początku i końca stringa
-std::string ConfigReader::trim(const std::string& str) const {
+string ConfigReader::trim(const string& str) const {
     size_t start = 0;
     while (start < str.length() &&
            (str[start] == ' ' || str[start] == '\t' ||
@@ -46,7 +48,7 @@ std::string ConfigReader::trim(const std::string& str) const {
 }
 
 // Funkcja pomocnicza do pobierania wartości dla danego klucza
-const char* ConfigReader::getValue(const std::string& key) const {
+const char* ConfigReader::getValue(const string& key) const {
     for (int i = 0; i < numEntries; ++i) {
         if (key == configEntries[i].key) {
             return configEntries[i].value;
@@ -57,14 +59,14 @@ const char* ConfigReader::getValue(const std::string& key) const {
 
 // Funkcja parsująca plik konfiguracyjny
 bool ConfigReader::parseConfig() {
-    std::ifstream inFile(filename.c_str());
+    ifstream inFile(filename.c_str());
     if (!inFile.is_open()) {
-        std::cout << "Nie można otworzyć pliku konfiguracyjnego: " << filename << std::endl;
+        cout << "Nie można otworzyć pliku konfiguracyjnego: " << filename << endl;
         return false;
     }
 
-    std::string line;
-    while (std::getline(inFile, line)) {
+    string line;
+    while (getline(inFile, line)) {
         // Usuwamy białe znaki
         line = trim(line);
 
@@ -75,21 +77,21 @@ bool ConfigReader::parseConfig() {
 
         // Szukamy znaku '='
         size_t delimiterPos = line.find('=');
-        if (delimiterPos == std::string::npos) {
-            std::cout << "Nieprawidłowy format linii w pliku konfiguracyjnym: " << line << std::endl;
+        if (delimiterPos == string::npos) {
+            cout << "Nieprawidłowy format linii w pliku konfiguracyjnym: " << line << endl;
             continue;
         }
 
         // Rozdzielamy klucz i wartość
-        std::string key = trim(line.substr(0, delimiterPos));
-        std::string value = trim(line.substr(delimiterPos + 1));
+        string key = trim(line.substr(0, delimiterPos));
+        string value = trim(line.substr(delimiterPos + 1));
 
         // Alokujemy pamięć dla klucza i wartości
         char* key_cstr = new char[key.length() + 1];
-        std::strcpy(key_cstr, key.c_str());
+        strcpy(key_cstr, key.c_str());
 
         char* value_cstr = new char[value.length() + 1];
-        std::strcpy(value_cstr, value.c_str());
+        strcpy(value_cstr, value.c_str());
 
         // Dodajemy wpis do tablicy configEntries
         if (numEntries >= capacityEntries) {
@@ -137,14 +139,14 @@ char** ConfigReader::getAlgorithms(int& count) const {
     char** algorithms = new char*[algoCount];
     int currentAlgo = 0;
 
-    std::string algoStr(algorithmsStr);
-    std::istringstream ss(algoStr);
-    std::string item;
-    while (std::getline(ss, item, ',')) {
+    string algoStr(algorithmsStr);
+    istringstream ss(algoStr);
+    string item;
+    while (getline(ss, item, ',')) {
         item = trim(item);
         // Alokujemy pamięć dla każdego algorytmu
         algorithms[currentAlgo] = new char[item.length() + 1];
-        std::strcpy(algorithms[currentAlgo], item.c_str());
+        strcpy(algorithms[currentAlgo], item.c_str());
         currentAlgo++;
     }
 
@@ -153,10 +155,10 @@ char** ConfigReader::getAlgorithms(int& count) const {
 }
 
 // Funkcja zwracająca nazwę pliku z macierzą odległości
-std::string ConfigReader::getDistanceMatrixFile() const {
+string ConfigReader::getDistanceMatrixFile() const {
     const char* value = getValue("distance_matrix_file");
     if (value != nullptr) {
-        return std::string(value);
+        return string(value);
     } else {
         return "";
     }
@@ -166,7 +168,7 @@ std::string ConfigReader::getDistanceMatrixFile() const {
 bool ConfigReader::getRunSimulation() const {
     const char* value = getValue("run_simulation");
     if (value != nullptr) {
-        std::string valStr(value);
+        string valStr(value);
         if (valStr == "true" || valStr == "1") {
             return true;
         }
@@ -178,7 +180,7 @@ bool ConfigReader::getRunSimulation() const {
 int ConfigReader::getNumMatrices() const {
     const char* value = getValue("num_matrices");
     if (value != nullptr) {
-        return std::atoi(value);
+        return atoi(value);
     } else {
         return 0;
     }
@@ -188,7 +190,7 @@ int ConfigReader::getNumMatrices() const {
 int ConfigReader::getMatrixSize() const {
     const char* value = getValue("matrix_size");
     if (value != nullptr) {
-        return std::atoi(value);
+        return atoi(value);
     } else {
         return 0;
     }
@@ -198,16 +200,16 @@ int ConfigReader::getMatrixSize() const {
 int ConfigReader::getMaxCost() const {
     const char* value = getValue("max_cost");
     if (value != nullptr) {
-        return std::atoi(value);
+        return atoi(value);
     } else {
         return 0;
     }
 }
 
-std::string ConfigReader::getMatrixType() const {
+string ConfigReader::getMatrixType() const {
     const char* value = getValue("matrix_type");
     if (value != nullptr) {
-        return std::string(value);
+        return string(value);
     } else {
         return "random"; // Domyślny typ macierzy
     }

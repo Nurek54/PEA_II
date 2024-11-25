@@ -5,6 +5,8 @@
 #include <climits>
 #include <iostream>
 
+using namespace std;
+
 BranchAndBoundDFS::BranchAndBoundDFS(const int* const* input_matrix, int num_cities_input)
         : num_cities(num_cities_input) {    matrix = new int*[num_cities];
     for (int i = 0; i < num_cities; ++i) {
@@ -37,7 +39,7 @@ void BranchAndBoundDFS::preprocessMinEdges() {
     }
 }
 
-BranchAndBoundDFS::Result BranchAndBoundDFS::solve(const std::string& matrixType) {
+BranchAndBoundDFS::Result BranchAndBoundDFS::solve(const string& matrixType) {
     struct StackNode {
         int* path;
         int path_length;
@@ -96,7 +98,7 @@ BranchAndBoundDFS::Result BranchAndBoundDFS::solve(const std::string& matrixType
     int* best_path = nullptr;
     int best_path_length = 0;
 
-    auto start_time = std::chrono::high_resolution_clock::now();
+    auto start_time = chrono::high_resolution_clock::now();
 
     while (!s.empty()) {
         StackNode current = s.pop();
@@ -151,10 +153,10 @@ BranchAndBoundDFS::Result BranchAndBoundDFS::solve(const std::string& matrixType
         delete[] current_path;
     }
 
-    auto end_time = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> seconds = end_time - start_time;
-    std::chrono::duration<double, std::milli> milliseconds = end_time - start_time;
-    std::chrono::duration<double, std::nano> nanoseconds = end_time - start_time;
+    auto end_time = chrono::high_resolution_clock::now();
+    chrono::duration<double> seconds = end_time - start_time;
+    chrono::duration<double, milli> milliseconds = end_time - start_time;
+    chrono::duration<double, nano> nanoseconds = end_time - start_time;
 
     SaveToCSV save("BranchAndBoundDFSResults.csv");
     save.saveResults("BranchAndBoundDFS", matrixType, seconds, milliseconds, nanoseconds, best_path, best_path_length, min_cost);

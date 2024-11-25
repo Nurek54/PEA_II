@@ -3,21 +3,23 @@
 
 #include <string>
 
+using namespace std;
+
 class ConfigReader {
 public:
-    ConfigReader(const std::string& filename);
+    ConfigReader(const string& filename);
     ~ConfigReader();
     bool parseConfig();
     char** getAlgorithms(int& count) const;
-    std::string getDistanceMatrixFile() const;
+    string getDistanceMatrixFile() const;
     bool getRunSimulation() const;
     int getNumMatrices() const;
     int getMatrixSize() const;
     int getMaxCost() const;
-    std::string getMatrixType() const;
+    string getMatrixType() const;
 
 private:
-    std::string filename;
+    string filename;
 
     struct ConfigEntry {
         char* key;
@@ -28,8 +30,8 @@ private:
     int numEntries;
     int capacityEntries;
 
-    std::string trim(const std::string& str) const;
-    const char* getValue(const std::string& key) const;
+    string trim(const string& str) const;
+    const char* getValue(const string& key) const;
 
     ConfigReader(const ConfigReader&) = delete;
     ConfigReader& operator=(const ConfigReader&) = delete;

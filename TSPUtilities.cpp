@@ -1,6 +1,8 @@
 #include "TSPUtilities.h"
 #include <climits>
 
+using namespace std;
+
 // Funkcja obliczająca koszt ścieżki
 int Utilities::calculate_cost(const int* path, int path_length, const int* const* distances, bool include_return) {
     int cost = 0;

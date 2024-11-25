@@ -5,7 +5,9 @@
 #include <climits>
 #include <iostream>
 
-// Konstruktor klasy BranchAndBoundBFS
+using namespace std;
+
+// Implementacja konstruktora klasy BranchAndBoundBFS
 BranchAndBoundBFS::BranchAndBoundBFS(const int* const* input_matrix, int num_cities_input)
         : num_cities(num_cities_input) {
     // Alokacja macierzy kosztów
@@ -22,7 +24,7 @@ BranchAndBoundBFS::BranchAndBoundBFS(const int* const* input_matrix, int num_cit
     preprocessMinEdges();
 }
 
-// Destruktor klasy BranchAndBoundBFS
+// Implementacja destruktora klasy BranchAndBoundBFS
 BranchAndBoundBFS::~BranchAndBoundBFS() {
     for (int i = 0; i < num_cities; ++i) {
         delete[] matrix[i];
@@ -44,8 +46,64 @@ void BranchAndBoundBFS::preprocessMinEdges() {
     }
 }
 
-// Funkcja solve - główna implementacja algorytmu BFS
-BranchAndBoundBFS::Result BranchAndBoundBFS::solve(const std::string& matrixType) {
+// Konstruktor kolejki
+BranchAndBoundBFS::Queue::Queue(int initial_capacity)
+        : front(0), rear(initial_capacity - 1), size(0), capacity(initial_capacity) {
+    nodes = new QueueNode[capacity];
+}
+
+// Destruktor kolejki
+BranchAndBoundBFS::Queue::~Queue() {
+    for (int i = 0; i < size; ++i) {
+        int index = (front + i) % capacity;
+        if (nodes[index].path != nullptr) {
+            delete[] nodes[index].path;
+        }
+    }
+    delete[] nodes;
+}
+
+// Funkcja enqueue - dodaje węzeł do kolejki
+void BranchAndBoundBFS::Queue::enqueue(const QueueNode& node) {
+    if (size >= capacity) {
+        // Zwiększenie pojemności kolejki (podwajanie)
+        int new_capacity = capacity * 2;
+        QueueNode* new_nodes = new QueueNode[new_capacity];
+        for (int i = 0; i < size; ++i) {
+            int old_index = (front + i) % capacity;
+            new_nodes[i] = nodes[old_index];
+        }
+        delete[] nodes;
+        nodes = new_nodes;
+        front = 0;
+        rear = size - 1;
+        capacity = new_capacity;
+    }
+    rear = (rear + 1) % capacity;
+    nodes[rear] = node;
+    size++;
+}
+
+// Funkcja dequeue - usuwa i zwraca węzeł z frontu kolejki
+BranchAndBoundBFS::Queue::QueueNode BranchAndBoundBFS::Queue::dequeue() {
+    QueueNode node = {nullptr, 0, 0, 0};
+    if (empty()) {
+        // Można rzucić wyjątek lub obsłużyć pustą kolejkę inaczej
+        return node;
+    }
+    node = nodes[front];
+    front = (front + 1) % capacity;
+    size--;
+    return node;
+}
+
+// Funkcja sprawdzająca, czy kolejka jest pusta
+bool BranchAndBoundBFS::Queue::empty() const {
+    return size == 0;
+}
+
+// Główna funkcja solve
+BranchAndBoundBFS::Result BranchAndBoundBFS::solve(const string& matrixType) {
     // Inicjalizacja własnej kolejki
     Queue q;
 
@@ -57,7 +115,8 @@ BranchAndBoundBFS::Result BranchAndBoundBFS::solve(const std::string& matrixType
     int root_bound = Utilities::calculateLowerBound(root_path, 1, matrix, minEdge, num_cities);
 
     // Dodanie węzła początkowego do kolejki
-    q.enqueue({root_path, 1, 0, root_bound});
+    Queue::QueueNode root_node = {root_path, 1, 0, root_bound};
+    q.enqueue(root_node);
 
     // Inicjalizacja zmiennych do przechowywania najlepszej ścieżki
     int min_cost = INT_MAX;
@@ -65,7 +124,7 @@ BranchAndBoundBFS::Result BranchAndBoundBFS::solve(const std::string& matrixType
     int best_path_length = 0;
 
     // Zapisujemy czas rozpoczęcia algorytmu
-    auto start_time = std::chrono::high_resolution_clock::now();
+    auto start_time = chrono::high_resolution_clock::now();
 
     // Główna pętla algorytmu BFS
     while (!q.empty()) {
@@ -134,7 +193,8 @@ BranchAndBoundBFS::Result BranchAndBoundBFS::solve(const std::string& matrixType
 
                 // Przycinamy gałęzie, jeśli dolna granica jest mniejsza niż obecny minimalny koszt
                 if (child_bound < min_cost) {
-                    q.enqueue({child_path, current_path_length + 1, temp_cost, child_bound});
+                    Queue::QueueNode child_node = {child_path, current_path_length + 1, temp_cost, child_bound};
+                    q.enqueue(child_node);
                 } else {
                     delete[] child_path;
                 }
@@ -146,10 +206,10 @@ BranchAndBoundBFS::Result BranchAndBoundBFS::solve(const std::string& matrixType
     }
 
     // Zapisujemy czas zakończenia algorytmu
-    auto end_time = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> seconds = end_time - start_time;
-    std::chrono::duration<double, std::milli> milliseconds = end_time - start_time;
-    std::chrono::duration<double, std::nano> nanoseconds = end_time - start_time;
+    auto end_time = chrono::high_resolution_clock::now();
+    chrono::duration<double> seconds = end_time - start_time;
+    chrono::duration<double, milli> milliseconds = end_time - start_time;
+    chrono::duration<double, nano> nanoseconds = end_time - start_time;
 
     // Dodajemy koszt powrotu do miasta początkowego dla najlepszej ścieżki (jeśli istnieje)
     if (best_path != nullptr) {

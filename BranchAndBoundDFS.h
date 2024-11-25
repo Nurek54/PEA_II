@@ -3,6 +3,8 @@
 
 #include <string>
 
+using namespace std;
+
 class BranchAndBoundDFS {
 public:
     BranchAndBoundDFS(const int* const* input_matrix, int num_cities_input);
@@ -18,7 +20,7 @@ public:
         ~Result() { delete[] path; }
     };
 
-    Result solve(const std::string& matrixType);
+    Result solve(const string& matrixType);
 
 private:
     int num_cities;

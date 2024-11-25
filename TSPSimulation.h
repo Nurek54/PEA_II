@@ -3,9 +3,11 @@
 
 #include <string>
 
+using namespace std;
+
 class TSPSimulation {
 public:
-    TSPSimulation(int numMatrices, int matrixSize, int maxCost, char** algorithms, int algorithmCount, const std::string& matrixType);
+    TSPSimulation(int numMatrices, int matrixSize, int maxCost, char** algorithms, int algorithmCount, const string& matrixType);
     ~TSPSimulation();
     void runSimulation();
 
@@ -15,7 +17,7 @@ private:
     int maxCost;             // Maksymalny koszt w macierzy
     char** algorithms;       // Lista algorytmów
     int algorithmCount;      // Liczba algorytmów
-    std::string matrixType;  // Typ generowanej macierzy (random/symmetric)
+    string matrixType;  // Typ generowanej macierzy (random/symmetric)
 
     void generateRandomMatrix(int** matrix);  // Generowanie losowej macierzy
     void generateSymmetricMatrix(int** matrix); // Generowanie symetrycznej macierzy

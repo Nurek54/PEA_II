@@ -3,6 +3,8 @@
 
 #include <string>
 
+using namespace std;
+
 // Przed deklaracją klas SaveToCSV i TSPInstance zakładamy, że są one zdefiniowane gdzie indziej
 class TSPInstance;
 class SaveToCSV;
@@ -25,7 +27,7 @@ public:
     ~BranchAndBoundBFS();
 
     // Główna funkcja rozwiązująca problem
-    Result solve(const std::string& matrixType);
+    Result solve(const string& matrixType);
 
 private:
     int num_cities;    // Liczba miast
@@ -48,66 +50,20 @@ private:
             int bound;
         };
 
+        // Deklaracje metod kolejki
+        Queue(int initial_capacity = 1000);
+        ~Queue();
+
+        void enqueue(const QueueNode& node);
+        QueueNode dequeue();
+        bool empty() const;
+
+    private:
         QueueNode* nodes;   // Dynamicznie alokowana tablica węzłów
         int front;          // Indeks frontu
         int rear;           // Indeks tyłu
         int size;           // Aktualny rozmiar kolejki
         int capacity;       // Maksymalna pojemność
-
-        // Konstruktor
-        Queue(int initial_capacity = 1000) : front(0), rear(initial_capacity - 1), size(0), capacity(initial_capacity) {
-            nodes = new QueueNode[capacity];
-        }
-
-        // Destruktor
-        ~Queue() {
-            for (int i = 0; i < size; ++i) {
-                int index = (front + i) % capacity;
-                if (nodes[index].path != nullptr) {
-                    delete[] nodes[index].path;
-                }
-            }
-            delete[] nodes;
-        }
-
-        // Funkcja enqueue - dodaje węzeł do kolejki
-        void enqueue(const QueueNode& node) {
-            if (size >= capacity) {
-                // Zwiększenie pojemności kolejki (podwajanie)
-                int new_capacity = capacity * 2;
-                QueueNode* new_nodes = new QueueNode[new_capacity];
-                for (int i = 0; i < size; ++i) {
-                    int old_index = (front + i) % capacity;
-                    new_nodes[i] = nodes[old_index];
-                }
-                delete[] nodes;
-                nodes = new_nodes;
-                front = 0;
-                rear = size - 1;
-                capacity = new_capacity;
-            }
-            rear = (rear + 1) % capacity;
-            nodes[rear] = node;
-            size++;
-        }
-
-        // Funkcja dequeue - usuwa i zwraca węzeł z frontu kolejki
-        QueueNode dequeue() {
-            QueueNode node = {nullptr, 0, 0, 0};
-            if (empty()) {
-                // Można rzucić wyjątek lub obsłużyć pustą kolejkę inaczej
-                return node;
-            }
-            node = nodes[front];
-            front = (front + 1) % capacity;
-            size--;
-            return node;
-        }
-
-        // Funkcja sprawdzająca, czy kolejka jest pusta
-        bool empty() const {
-            return size == 0;
-        }
     };
 };
 

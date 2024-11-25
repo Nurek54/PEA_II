@@ -3,10 +3,12 @@
 
 #include <string>
 
+using namespace std;
+
 class TSPInstance {
 public:
     // Konstruktor przyjmujący nazwę pliku
-    TSPInstance(const std::string& filename);
+    TSPInstance(const string& filename);
 
     // Konstruktor przyjmujący macierz
     TSPInstance(int** matrix, int size);
@@ -20,7 +22,7 @@ public:
 private:
     int** costMatrix;  // Macierz kosztów
     int cityCount;     // Liczba miast
-    void loadFromFile(const std::string& filename);  // Wczytanie danych z pliku
+    void loadFromFile(const string& filename);  // Wczytanie danych z pliku
 };
 
 #endif // TSPINSTANCE_H

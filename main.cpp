@@ -12,7 +12,7 @@ int main() {
     // Wczytaj konfigurację z pliku
     ConfigReader config("C:\\Users\\g_sie\\OneDrive\\Pulpit\\PEA_II\\config.txt");
     if (!config.parseConfig()) {
-        std::cout << "Błąd podczas parsowania pliku konfiguracyjnego." << std::endl;
+        cout << "Błąd podczas parsowania pliku konfiguracyjnego." << endl;
         return 1;
     }
 
@@ -20,12 +20,12 @@ int main() {
     int algorithmCount = 0;
     char** algorithms = config.getAlgorithms(algorithmCount);
     if (algorithms == nullptr || algorithmCount == 0) {
-        std::cout << "Nie podano algorytmów w konfiguracji." << std::endl;
+        cout << "Nie podano algorytmów w konfiguracji." << endl;
         return 1;
     }
 
     bool runSimulation = config.getRunSimulation();
-    std::string matrixType = config.getMatrixType(); // Pobierz typ macierzy (random/symmetric)
+    string matrixType = config.getMatrixType(); // Pobierz typ macierzy (random/symmetric)
 
     if (runSimulation) {
         // Uruchom symulację
@@ -39,7 +39,7 @@ int main() {
         // Wczytaj macierz odległości
         string matrixFile = config.getDistanceMatrixFile();
         if (matrixFile.empty()) {
-            std::cout << "Nie podano pliku z macierzą odległości w konfiguracji." << std::endl;
+            cout << "Nie podano pliku z macierzą odległości w konfiguracji." << endl;
             // Zwolnij pamięć algorytmów przed zakończeniem
             for (int i = 0; i < algorithmCount; ++i) {
                 delete[] algorithms[i];
@@ -54,7 +54,7 @@ int main() {
 
         // Iterujemy po wybranych algorytmach
         for (int i = 0; i < algorithmCount; ++i) {
-            std::string algorithm(algorithms[i]);
+            string algorithm(algorithms[i]);
 
             if (algorithm == "BFS") {
                 BranchAndBoundBFS solver(distances, numCities);
@@ -69,7 +69,7 @@ int main() {
                 auto result = solver.solve(instance, matrixType);
                 // Wynik zapisany do CSV, nie drukujemy
             } else {
-                std::cout << "Nieznany algorytm: " << algorithm << std::endl;
+                cout << "Nieznany algorytm: " << algorithm << endl;
                 // Możesz zdecydować, czy kontynuować, czy przerwać w tym miejscu
             }
         }

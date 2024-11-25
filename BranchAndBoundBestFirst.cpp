@@ -5,6 +5,8 @@
 #include <chrono>
 #include <iostream>
 
+using namespace std;
+
 // Konstruktor klasy Node
 BranchAndBoundBestFirst::Node::Node(int num_cities) {
     path = new int[num_cities + 1]; // Prealokacja ścieżki
@@ -118,7 +120,7 @@ BranchAndBoundBestFirst::Node* BranchAndBoundBestFirst::remove(Node**& heap, int
 }
 
 // Główna funkcja solve
-BranchAndBoundBestFirst::Result BranchAndBoundBestFirst::solve(const TSPInstance& instance, const std::string& matrixType) {
+BranchAndBoundBestFirst::Result BranchAndBoundBestFirst::solve(const TSPInstance& instance, const string& matrixType) {
     int best_cost = INT_MAX;
     int* best_path = nullptr;
     int best_path_length = 0;
@@ -140,7 +142,7 @@ BranchAndBoundBestFirst::Result BranchAndBoundBestFirst::solve(const TSPInstance
     insert(heap, heapSize, heapCapacity, root);
 
     // Zapisujemy czas rozpoczęcia algorytmu
-    auto start_time = std::chrono::high_resolution_clock::now();
+    auto start_time = chrono::high_resolution_clock::now();
 
     while (heapSize > 0) {
         Node* current_node = remove(heap, heapSize);
@@ -206,26 +208,13 @@ BranchAndBoundBestFirst::Result BranchAndBoundBestFirst::solve(const TSPInstance
         delete current_node;
     }
 
-    // Dodajemy koszt powrotu do miasta początkowego dla najlepszej ścieżki
-    if (best_path != nullptr) {
-        int final_cost = Utilities::calculate_cost(best_path, best_path_length, matrix, true);
-        best_cost = final_cost;
-        // Dodajemy miasto początkowe na końcu ścieżki, aby zamknąć cykl
-        int* complete_path = new int[best_path_length + 1];
-        for (int i = 0; i < best_path_length; ++i) {
-            complete_path[i] = best_path[i];
-        }
-        complete_path[best_path_length] = best_path[0];
-        delete[] best_path;
-        best_path = complete_path;
-        best_path_length += 1;
-    }
+    // // Usunięto dodatkowe dodawanie miasta początkowego tutaj
 
     // Zapisujemy czas zakończenia algorytmu
-    auto end_time = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> seconds = end_time - start_time;
-    std::chrono::duration<double, std::milli> milliseconds = end_time - start_time;
-    std::chrono::duration<double, std::nano> nanoseconds = end_time - start_time;
+    auto end_time = chrono::high_resolution_clock::now();
+    chrono::duration<double> seconds = end_time - start_time;
+    chrono::duration<double, milli> milliseconds = end_time - start_time;
+    chrono::duration<double, nano> nanoseconds = end_time - start_time;
 
     // Zapisywanie wyników do pliku CSV
     SaveToCSV save("BranchAndBoundBestFirstResults.csv");
