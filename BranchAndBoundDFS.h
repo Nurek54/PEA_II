@@ -28,6 +28,14 @@ private:
     int* minEdge; // Minimalne krawędzie dla każdego miasta
 
     void preprocessMinEdges();
+
+    void dfs(int* current_path,
+             int current_path_length,
+             int current_cost,
+             int current_bound,
+             int& min_cost,
+             int*& best_path,
+             int& best_path_length);
 };
 
 #endif // BRANCHANDBOUNDDFS_H

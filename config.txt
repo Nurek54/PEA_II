@@ -4,7 +4,7 @@
 algorithms = BFS, DFS, BEST_FIRST
 
 # Nazwa pliku z macierzą odległości (jeśli run_simulation = false)
-distance_matrix_file = C:/Users/g_sie/OneDrive/Pulpit/PEA_II/matrix_11x11.atsp
+distance_matrix_file = C:/Users/g_sie/OneDrive/Pulpit/PEA_II/matrix_6x6.atsp
 
 # Czy uruchomić symulację (true/false)
 run_simulation = false
