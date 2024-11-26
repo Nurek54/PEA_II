@@ -77,7 +77,7 @@ void BranchAndBoundBestFirst::insert(Node**& heap, int& heapSize, int& heapCapac
     ++heapSize;
 
     // Przesuwanie elementu w górę kopca
-    while (idx > 0 && heap[idx]->estimated_total_cost < heap[(idx - 1) / 2]->estimated_total_cost) {
+    while (idx > 0 && (*heap[idx]).estimated_total_cost < (*heap[(idx - 1) / 2]).estimated_total_cost) {
         Node* temp = heap[idx];
         heap[idx] = heap[(idx - 1) / 2];
         heap[(idx - 1) / 2] = temp;
@@ -101,10 +101,10 @@ BranchAndBoundBestFirst::Node* BranchAndBoundBestFirst::remove(Node**& heap, int
         int left = 2 * idx + 1;
         int right = 2 * idx + 2;
 
-        if (left < heapSize && heap[left]->estimated_total_cost < heap[smallest]->estimated_total_cost) {
+        if (left < heapSize && (*heap[left]).estimated_total_cost < (*heap[smallest]).estimated_total_cost) {
             smallest = left;
         }
-        if (right < heapSize && heap[right]->estimated_total_cost < heap[smallest]->estimated_total_cost) {
+        if (right < heapSize && (*heap[right]).estimated_total_cost < (*heap[smallest]).estimated_total_cost) {
             smallest = right;
         }
         if (smallest == idx) break;
@@ -117,6 +117,14 @@ BranchAndBoundBestFirst::Node* BranchAndBoundBestFirst::remove(Node**& heap, int
     }
 
     return node;
+}
+
+inline size_t getCurrentMemoryUsageKB() {
+    PROCESS_MEMORY_COUNTERS pmc;
+    if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc))) {
+        return pmc.WorkingSetSize / 1024; // Pamięć w KB
+    }
+    return 0;
 }
 
 // Główna funkcja solve
@@ -132,43 +140,41 @@ BranchAndBoundBestFirst::Result BranchAndBoundBestFirst::solve(const TSPInstance
 
     // Tworzenie węzła początkowego
     Node* root = new Node(num_cities);
-    root->path_length = 1;
-    root->path[0] = 0; // Startujemy z miasta 0
-    root->current_city = 0;
-    root->current_cost = 0;
-    // Używamy Utilities::calculateLowerBound
-    root->estimated_total_cost = Utilities::calculateLowerBound(root->path, root->path_length, matrix, minEdge, num_cities);
+    (*root).path_length = 1;
+    (*root).path[0] = 0; // Startujemy z miasta 0
+    (*root).current_city = 0;
+    (*root).current_cost = 0;
+    (*root).estimated_total_cost = Utilities::calculateLowerBound((*root).path, (*root).path_length, matrix, minEdge, num_cities);
 
     insert(heap, heapSize, heapCapacity, root);
 
-    // Zapisujemy czas rozpoczęcia algorytmu
     auto start_time = chrono::high_resolution_clock::now();
 
     while (heapSize > 0) {
         Node* current_node = remove(heap, heapSize);
 
         // Przycinanie gałęzi
-        if (current_node->estimated_total_cost >= best_cost) {
+        if ((*current_node).estimated_total_cost >= best_cost) {
             delete current_node;
             continue;
         }
 
         // Sprawdzamy, czy odwiedziliśmy wszystkie miasta
-        if (current_node->path_length == num_cities) {
+        if ((*current_node).path_length == num_cities) {
             // Dodajemy powrót do miasta startowego
-            int* complete_path = new int[current_node->path_length + 1];
-            for (int i = 0; i < current_node->path_length; ++i) {
-                complete_path[i] = current_node->path[i];
+            int* complete_path = new int[(*current_node).path_length + 1];
+            for (int i = 0; i < (*current_node).path_length; ++i) {
+                complete_path[i] = (*current_node).path[i];
             }
-            complete_path[current_node->path_length] = current_node->path[0];
+            complete_path[(*current_node).path_length] = (*current_node).path[0];
 
             // Obliczamy całkowity koszt ścieżki
-            int total_cost = Utilities::calculate_cost(complete_path, current_node->path_length + 1, matrix, true);
+            int total_cost = Utilities::calculate_cost(complete_path, (*current_node).path_length + 1, matrix, true);
 
             if (total_cost < best_cost) {
                 best_cost = total_cost;
                 delete[] best_path;
-                best_path_length = current_node->path_length + 1;
+                best_path_length = (*current_node).path_length + 1;
                 best_path = new int[best_path_length];
                 for (int i = 0; i < best_path_length; ++i) {
                     best_path[i] = complete_path[i];
@@ -182,22 +188,21 @@ BranchAndBoundBestFirst::Result BranchAndBoundBestFirst::solve(const TSPInstance
 
         // Generowanie dzieci węzła
         for (int i = 0; i < num_cities; ++i) {
-            if (!Utilities::isCityInPath(current_node->path, current_node->path_length, i) && matrix[current_node->current_city][i] != -1) {
+            if (!Utilities::isCityInPath((*current_node).path, (*current_node).path_length, i) && matrix[(*current_node).current_city][i] != -1) {
                 Node* child = new Node(num_cities);
                 // Kopiowanie ścieżki
-                for (int j = 0; j < current_node->path_length; ++j) {
-                    child->path[j] = current_node->path[j];
+                for (int j = 0; j < (*current_node).path_length; ++j) {
+                    (*child).path[j] = (*current_node).path[j];
                 }
-                child->path[current_node->path_length] = i;
-                child->path_length = current_node->path_length + 1;
-                child->current_city = i;
-                child->current_cost = current_node->current_cost + matrix[current_node->current_city][i];
+                (*child).path[(*current_node).path_length] = i;
+                (*child).path_length = (*current_node).path_length + 1;
+                (*child).current_city = i;
+                (*child).current_cost = (*current_node).current_cost + matrix[(*current_node).current_city][i];
 
-                // Obliczamy dolną granicę dla dziecka za pomocą Utilities
-                child->estimated_total_cost = Utilities::calculateLowerBound(child->path, child->path_length, matrix, minEdge, num_cities);
+                (*child).estimated_total_cost = Utilities::calculateLowerBound((*child).path, (*child).path_length, matrix, minEdge, num_cities);
 
                 // Przycinanie gałęzi jeśli granica dolna jest mniejsza niż aktualny min_cost
-                if (child->estimated_total_cost < best_cost) {
+                if ((*child).estimated_total_cost < best_cost) {
                     insert(heap, heapSize, heapCapacity, child);
                 } else {
                     delete child;
@@ -208,17 +213,15 @@ BranchAndBoundBestFirst::Result BranchAndBoundBestFirst::solve(const TSPInstance
         delete current_node;
     }
 
-    // // Usunięto dodatkowe dodawanie miasta początkowego tutaj
-
-    // Zapisujemy czas zakończenia algorytmu
     auto end_time = chrono::high_resolution_clock::now();
     chrono::duration<double> seconds = end_time - start_time;
     chrono::duration<double, milli> milliseconds = end_time - start_time;
     chrono::duration<double, nano> nanoseconds = end_time - start_time;
 
-    // Zapisywanie wyników do pliku CSV
+    size_t memoryUsageKB = getCurrentMemoryUsageKB();
+
     SaveToCSV save("BranchAndBoundBestFirstResults.csv");
-    save.saveResults("BranchAndBoundBestFirst", matrixType, seconds, milliseconds, nanoseconds, best_path, best_path_length, best_cost);
+    save.saveResults("BranchAndBoundBestFirst", matrixType, seconds, milliseconds, nanoseconds, memoryUsageKB, best_path, best_path_length, best_cost);
 
     // Czyszczenie pamięci
     for (int i = 0; i < heapSize; ++i) {

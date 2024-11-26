@@ -12,7 +12,6 @@ int Utilities::calculate_cost(const int* path, int path_length, const int* const
         }
         cost += distances[path[i]][path[i + 1]];
     }
-    // Dodajemy koszt powrotu do miasta początkowego tylko, jeśli include_return jest true
     if (include_return && path[path_length - 1] != path[0]) {
         if (distances[path[path_length - 1]][path[0]] == -1) {
             return INT_MAX; // Nie ma powrotu do miasta początkowego
@@ -49,7 +48,6 @@ int Utilities::calculateLowerBound(const int* path, int path_length, const int* 
         visited[path[i]] = true;
     }
 
-    // Dodaj minimalny koszt powrotu do miasta początkowego
     int min_return = (distances[last_node][path[0]] != -1) ? distances[last_node][path[0]] : INT_MAX / 2;
 
     // Sumujemy minimalne koszty wejścia i wyjścia dla nieodwiedzonych miast

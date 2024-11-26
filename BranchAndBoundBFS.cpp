@@ -102,6 +102,15 @@ bool BranchAndBoundBFS::Queue::empty() const {
     return size == 0;
 }
 
+// Funkcja do pomiaru pamięci RAM w KB
+inline size_t getCurrentMemoryUsageKB() {
+    PROCESS_MEMORY_COUNTERS pmc;
+    if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc))) {
+        return pmc.WorkingSetSize / 1024; // Pamięć w KB
+    }
+    return 0;
+}
+
 // Główna funkcja solve
 BranchAndBoundBFS::Result BranchAndBoundBFS::solve(const string& matrixType) {
     // Inicjalizacja własnej kolejki
@@ -123,7 +132,6 @@ BranchAndBoundBFS::Result BranchAndBoundBFS::solve(const string& matrixType) {
     int* best_path = nullptr;
     int best_path_length = 0;
 
-    // Zapisujemy czas rozpoczęcia algorytmu
     auto start_time = chrono::high_resolution_clock::now();
 
     // Główna pętla algorytmu BFS
@@ -205,12 +213,6 @@ BranchAndBoundBFS::Result BranchAndBoundBFS::solve(const string& matrixType) {
         delete[] current_path;
     }
 
-    // Zapisujemy czas zakończenia algorytmu
-    auto end_time = chrono::high_resolution_clock::now();
-    chrono::duration<double> seconds = end_time - start_time;
-    chrono::duration<double, milli> milliseconds = end_time - start_time;
-    chrono::duration<double, nano> nanoseconds = end_time - start_time;
-
     // Dodajemy koszt powrotu do miasta początkowego dla najlepszej ścieżki (jeśli istnieje)
     if (best_path != nullptr) {
         // Sprawdzamy, czy ostatnie miasto nie jest już miastem początkowym
@@ -230,11 +232,17 @@ BranchAndBoundBFS::Result BranchAndBoundBFS::solve(const string& matrixType) {
         min_cost = final_cost;
     }
 
-    // Zapisujemy wyniki do pliku CSV
-    SaveToCSV save("BranchAndBoundBFSResults.csv");
-    save.saveResults("BranchAndBoundBFS", matrixType, seconds, milliseconds, nanoseconds, best_path, best_path_length, min_cost);
+    // Zapisujemy czas zakończenia algorytmu
+    auto end_time = chrono::high_resolution_clock::now();
+    chrono::duration<double> seconds = end_time - start_time;
+    chrono::duration<double, milli> milliseconds = end_time - start_time;
+    chrono::duration<double, nano> nanoseconds = end_time - start_time;
 
-    // Przygotowujemy wynik do zwrócenia
+    size_t memoryUsageKB = getCurrentMemoryUsageKB();
+
+    SaveToCSV save("BranchAndBoundBFSResults.csv");
+    save.saveResults("BranchAndBoundBFS", matrixType, seconds, milliseconds, nanoseconds, memoryUsageKB, best_path, best_path_length, min_cost);
+
     Result result;
     result.path = best_path;
     result.path_length = best_path_length;

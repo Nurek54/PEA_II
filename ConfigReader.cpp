@@ -1,6 +1,5 @@
 #include "ConfigReader.h"
 #include <fstream>
-#include <iostream>
 #include <sstream>
 #include <cstring>
 
@@ -40,11 +39,7 @@ string ConfigReader::trim(const string& str) const {
         end--;
     }
 
-    if (start >= end) {
-        return "";
-    } else {
-        return str.substr(start, end - start);
-    }
+    return (start >= end) ? "" : str.substr(start, end - start);
 }
 
 // Funkcja pomocnicza do pobierania wartości dla danego klucza
@@ -59,10 +54,9 @@ const char* ConfigReader::getValue(const string& key) const {
 
 // Funkcja parsująca plik konfiguracyjny
 bool ConfigReader::parseConfig() {
-    ifstream inFile(filename.c_str());
+    ifstream inFile(filename);
     if (!inFile.is_open()) {
-        cout << "Nie można otworzyć pliku konfiguracyjnego: " << filename << endl;
-        return false;
+        return false; // Plik nie został otwarty
     }
 
     string line;
@@ -78,8 +72,7 @@ bool ConfigReader::parseConfig() {
         // Szukamy znaku '='
         size_t delimiterPos = line.find('=');
         if (delimiterPos == string::npos) {
-            cout << "Nieprawidłowy format linii w pliku konfiguracyjnym: " << line << endl;
-            continue;
+            continue; // Pomijamy niepoprawne linie
         }
 
         // Rozdzielamy klucz i wartość
@@ -120,22 +113,21 @@ char** ConfigReader::getAlgorithms(int& count) const {
     count = 0;
     const char* algorithmsStr = getValue("algorithms");
     if (algorithmsStr == nullptr) {
-        // Próbujemy z kluczem 'algorithm' dla kompatybilności wstecznej
         algorithmsStr = getValue("algorithm");
         if (algorithmsStr == nullptr) {
             return nullptr; // Brak algorytmów w konfiguracji
         }
     }
 
-    // Najpierw liczymy liczbę algorytmów poprzez liczenie przecinków
-    int algoCount = 1; // Minimum jeden algorytm
+    // Liczenie algorytmów (przecinki)
+    int algoCount = 1;
     for (const char* p = algorithmsStr; *p != '\0'; ++p) {
         if (*p == ',') {
             algoCount++;
         }
     }
 
-    // Alokujemy tablicę dla nazw algorytmów
+    // Alokacja pamięci dla algorytmów
     char** algorithms = new char*[algoCount];
     int currentAlgo = 0;
 
@@ -144,7 +136,6 @@ char** ConfigReader::getAlgorithms(int& count) const {
     string item;
     while (getline(ss, item, ',')) {
         item = trim(item);
-        // Alokujemy pamięć dla każdego algorytmu
         algorithms[currentAlgo] = new char[item.length() + 1];
         strcpy(algorithms[currentAlgo], item.c_str());
         currentAlgo++;
@@ -154,64 +145,33 @@ char** ConfigReader::getAlgorithms(int& count) const {
     return algorithms;
 }
 
-// Funkcja zwracająca nazwę pliku z macierzą odległości
+// Funkcje pobierające dane z konfiguracji
 string ConfigReader::getDistanceMatrixFile() const {
     const char* value = getValue("distance_matrix_file");
-    if (value != nullptr) {
-        return string(value);
-    } else {
-        return "";
-    }
+    return value != nullptr ? string(value) : "";
 }
 
-// Funkcja zwracająca flagę czy uruchomić symulację
 bool ConfigReader::getRunSimulation() const {
     const char* value = getValue("run_simulation");
-    if (value != nullptr) {
-        string valStr(value);
-        if (valStr == "true" || valStr == "1") {
-            return true;
-        }
-    }
-    return false;
+    return value != nullptr && (string(value) == "true" || string(value) == "1");
 }
 
-// Funkcja zwracająca liczbę macierzy do symulacji
 int ConfigReader::getNumMatrices() const {
     const char* value = getValue("num_matrices");
-    if (value != nullptr) {
-        return atoi(value);
-    } else {
-        return 0;
-    }
+    return value != nullptr ? atoi(value) : 0;
 }
 
-// Funkcja zwracająca rozmiar macierzy
 int ConfigReader::getMatrixSize() const {
     const char* value = getValue("matrix_size");
-    if (value != nullptr) {
-        return atoi(value);
-    } else {
-        return 0;
-    }
+    return value != nullptr ? atoi(value) : 0;
 }
 
-// Funkcja zwracająca maksymalny koszt
 int ConfigReader::getMaxCost() const {
     const char* value = getValue("max_cost");
-    if (value != nullptr) {
-        return atoi(value);
-    } else {
-        return 0;
-    }
+    return value != nullptr ? atoi(value) : 0;
 }
 
 string ConfigReader::getMatrixType() const {
     const char* value = getValue("matrix_type");
-    if (value != nullptr) {
-        return string(value);
-    } else {
-        return "random"; // Domyślny typ macierzy
-    }
+    return value != nullptr ? string(value) : "random";
 }
-

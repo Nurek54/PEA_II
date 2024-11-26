@@ -2,10 +2,12 @@
 #define BRANCHANDBOUNDBFS_H
 
 #include <string>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <psapi.h>
 
 using namespace std;
 
-// Przed deklaracją klas SaveToCSV i TSPInstance zakładamy, że są one zdefiniowane gdzie indziej
 class TSPInstance;
 class SaveToCSV;
 
@@ -37,7 +39,6 @@ private:
     // Funkcja do wstępnej obróbki minimalnych krawędzi
     void preprocessMinEdges();
 
-    // Wyłączamy konstruktor kopiujący i operator przypisania
     BranchAndBoundBFS(const BranchAndBoundBFS&) = delete;
     BranchAndBoundBFS& operator=(const BranchAndBoundBFS&) = delete;
 

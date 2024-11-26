@@ -28,24 +28,26 @@ string replaceDotWithComma(double value) {
 }
 
 void SaveToCSV::saveResults(const string& algorithmName,
-                            const string& matrixType,  // Dodane
+                            const string& matrixType,
                             const chrono::duration<double>& seconds,
                             const chrono::duration<double, milli>& milliseconds,
                             const chrono::duration<double, nano>& nanoseconds,
+                            size_t memoryUsageKB,        // Nowy parametr
                             const int* path, int path_length, int cost) {
 
     ofstream csvFile(filename, ios::app);
     if (csvFile.is_open()) {
         if (isFileNew) {
-            csvFile << "Algorithm | MatrixType | Seconds | Milliseconds | Nanoseconds | Path | Cost\n";
+            csvFile << "Algorithm | MatrixType | Seconds | Milliseconds | Nanoseconds | MemoryUsage(KB) | Path | Cost\n";
             isFileNew = false;
         }
 
         csvFile << algorithmName << " | "
-                << matrixType << " | "  // Dodane
+                << matrixType << " | "
                 << replaceDotWithComma(seconds.count()) << " | "
                 << replaceDotWithComma(milliseconds.count()) << " | "
-                << replaceDotWithComma(nanoseconds.count()) << " | ";
+                << replaceDotWithComma(nanoseconds.count()) << " | "
+                << memoryUsageKB << " | ";  // Dodane
 
         for (int i = 0; i < path_length; ++i) {
             csvFile << path[i];

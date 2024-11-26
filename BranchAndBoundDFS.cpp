@@ -93,6 +93,15 @@ void BranchAndBoundDFS::dfs(int* current_path,
     delete[] current_path;
 }
 
+// Funkcja do pomiaru pamięci RAM w KB
+inline size_t getCurrentMemoryUsageKB() {
+    PROCESS_MEMORY_COUNTERS pmc;
+    if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc))) {
+        return pmc.WorkingSetSize / 1024; // Pamięć w KB
+    }
+    return 0;
+}
+
 BranchAndBoundDFS::Result BranchAndBoundDFS::solve(const string& matrixType) {
     int* root_path = new int[1];
     root_path[0] = 0;
@@ -112,8 +121,10 @@ BranchAndBoundDFS::Result BranchAndBoundDFS::solve(const string& matrixType) {
     chrono::duration<double, milli> milliseconds = end_time - start_time;
     chrono::duration<double, nano> nanoseconds = end_time - start_time;
 
+    size_t memoryUsageKB = getCurrentMemoryUsageKB();
+
     SaveToCSV save("BranchAndBoundDFSResults.csv");
-    save.saveResults("BranchAndBoundDFS", matrixType, seconds, milliseconds, nanoseconds, best_path, best_path_length, min_cost);
+    save.saveResults("BranchAndBoundDFS", matrixType, seconds, milliseconds, nanoseconds, memoryUsageKB, best_path, best_path_length, min_cost);
 
     Result result;
     result.path = best_path;

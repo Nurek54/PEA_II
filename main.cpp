@@ -10,7 +10,7 @@ using namespace std;
 
 int main() {
     // Wczytaj konfigurację z pliku
-    ConfigReader config("C:\\Users\\g_sie\\OneDrive\\Pulpit\\PEA_II\\config.txt");
+    ConfigReader config("config.txt");
     if (!config.parseConfig()) {
         cout << "Błąd podczas parsowania pliku konfiguracyjnego." << endl;
         return 1;
@@ -70,7 +70,6 @@ int main() {
                 // Wynik zapisany do CSV, nie drukujemy
             } else {
                 cout << "Nieznany algorytm: " << algorithm << endl;
-                // Możesz zdecydować, czy kontynuować, czy przerwać w tym miejscu
             }
         }
     }

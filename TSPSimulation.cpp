@@ -32,29 +32,23 @@ void TSPSimulation::runSimulation() {
             generateRandomMatrix(matrix);
         }
 
-        // Tworzymy instancję problemu
         TSPInstance instance(matrix, matrixSize);
         const int* const* distances = instance.getDistances();
 
-        // Iterujemy po wybranych algorytmach
         for (int i = 0; i < algorithmCount; ++i) {
             string algorithm(algorithms[i]);
 
             if (algorithm == "BFS") {
                 BranchAndBoundBFS solver(distances, matrixSize);
                 auto result = solver.solve(matrixType);
-                // Wynik zapisany do CSV, nie drukujemy
             } else if (algorithm == "DFS") {
                 BranchAndBoundDFS solver(distances, matrixSize);
                 auto result = solver.solve(matrixType);
-                // Wynik zapisany do CSV, nie drukujemy
             } else if (algorithm == "BEST_FIRST") {
                 BranchAndBoundBestFirst solver(distances, matrixSize);
                 auto result = solver.solve(instance, matrixType);
-                // Wynik zapisany do CSV, nie drukujemy
             } else {
                 cout << "Nieznany algorytm: " << algorithm << endl;
-                // Możemy pominąć lub logować
             }
         }
 
